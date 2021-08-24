@@ -7,9 +7,8 @@ export type BaseIconProps = {
   stroke?: CSSProperties['color'];
 };
 
-export type IconType =
-  | 'badge-check'
+export type IconType = 'badge-check';
 
 export const iconTypes: Record<IconType, ComponentType<BaseIconProps>> = {
   'badge-check': BadgeCheck,
-}
+};

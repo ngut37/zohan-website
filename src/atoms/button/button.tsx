@@ -1,14 +1,10 @@
-import React from 'react'
+import React from 'react';
 
 type Props = {
-  onClick?: () => void,
-  message: string,
-}
+  onClick?: () => void;
+  message: string;
+};
 
 export const Button = ({ onClick, message }: Props) => {
-  return (
-    <div onClick={onClick}>
-      {message}
-    </div>
-  )
-}
+  return <div onClick={onClick}>{message}</div>;
+};
