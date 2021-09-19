@@ -1,5 +1,7 @@
 import { MessageObject } from '../../../types';
 
 export const navbarMessages: MessageObject = {
-  'navbar.logo': 'ZOHAN',
+  'navbar.login': 'Přihlásit',
+  'navbar.register': 'Registrovat',
+  'navbar.logout': 'Odhlásit se',
 };

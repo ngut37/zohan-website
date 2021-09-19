@@ -209,6 +209,11 @@ module.exports = {
             group: 'internal',
             position: 'before',
           },
+          {
+            pattern: '@chakra-ui/**',
+            group: 'internal',
+            position: 'before',
+          },
 
           {
             pattern: '@types/**',

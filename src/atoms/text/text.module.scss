@@ -3,6 +3,8 @@
 
 @import 'styles/media';
 
+// ! CURRENTLY NOT USED
+
 .default {
   margin: 0;
   font-family: fonts.$noto-sans;
@@ -16,7 +18,7 @@
   font-size: 22px;
   font-family: fonts.$raleway;
   font-weight: 700;
-  color: colors.$white;
+  color: colors.$black;
   @include media_md {
     font-size: 24px;
   }
@@ -26,7 +28,7 @@
   font-size: 16px;
   font-family: fonts.$raleway;
   font-weight: 600;
-  color: colors.$white;
+  color: colors.$black;
   @include media_md {
     font-size: 18px;
   }
@@ -36,7 +38,7 @@
   font-size: 16px;
   font-family: fonts.$raleway;
   font-weight: 600;
-  color: colors.$silver;
+  color: colors.$black;
   @include media_md {
     font-size: 18px;
   }
@@ -46,7 +48,7 @@
   font-size: 14px;
   font-family: fonts.$raleway;
   font-weight: 500;
-  color: colors.$silver;
+  color: colors.$black;
   @include media_md {
     font-size: 16px;
   }
@@ -56,7 +58,7 @@
   font-size: 12px;
   font-family: fonts.$noto_sans;
   font-weight: 500;
-  color: colors.$silver;
+  color: colors.$black;
   @include media_md {
     font-size: 14px;
   }
@@ -66,7 +68,7 @@
   font-size: 12px;
   font-family: fonts.$noto_sans;
   font-weight: 400;
-  color: colors.$silver;
+  color: colors.$black;
   @include media_md {
     font-size: 14px;
   }
@@ -76,7 +78,7 @@
   font-size: 10px;
   font-family: fonts.$noto_sans;
   font-weight: 500;
-  color: colors.$silver;
+  color: colors.$black;
   @include media_md {
     font-size: 12px;
   }

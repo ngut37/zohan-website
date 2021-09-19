@@ -4,17 +4,25 @@ import { useIntl } from 'react-intl';
 
 import { Message, messageToString } from '@utils/message';
 
-export type ButtonProps = {
-  onClick?: () => void;
+import {
+  Button as ChakraButton,
+  ButtonProps as ChakraButtonProps,
+} from '@chakra-ui/react';
+
+export type ButtonProps = ChakraButtonProps & {
   message: Message;
 };
 
-export const Button = ({ onClick, message }: ButtonProps) => {
+export const Button = ({ message, ...buttonProps }: ButtonProps) => {
   const intl = useIntl();
   const content = useMemo(
     () => messageToString(message, intl),
     [intl, message],
   );
 
-  return <div onClick={onClick}>{content}</div>;
+  return (
+    <ChakraButton colorScheme="teal" {...buttonProps}>
+      {content}
+    </ChakraButton>
+  );
 };

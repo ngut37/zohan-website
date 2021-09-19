@@ -13,28 +13,26 @@ export default function ComponentPallette() {
   );
 
   return (
-    <Root>
-      <Text type="h1" message={{ text: 'ButtonWithIcon' }} />
+    <Root protectedPage>
+      <Text fontSize="h1" message={{ text: 'ButtonWithIcon' }} />
       <ButtonWithIcon
         icon="badge-check"
         message={{ text: 'Click me!' }}
         onClick={onButtonClick}
       />
-      <Text type="h1" message={{ text: 'Text' }} />
-      <Text type="subsubtext" message={{ text: 'h1' }} />
-      <Text type="h1" message={{ id: 'lorem' }} />
-      <Text type="subsubtext" message={{ text: 'h2' }} />
-      <Text type="h2" message={{ id: 'lorem' }} />
-      <Text type="subsubtext" message={{ text: 'h3' }} />
-      <Text type="h3" message={{ id: 'lorem' }} />
-      <Text type="subsubtext" message={{ text: 'h4' }} />
-      <Text type="h4" message={{ id: 'lorem' }} />
-      <Text type="subsubtext" message={{ text: 'text' }} />
-      <Text type="text" message={{ id: 'lorem' }} />
-      <Text type="subsubtext" message={{ text: 'subtext' }} />
-      <Text type="subtext" message={{ id: 'lorem' }} />
-      <Text type="subsubtext" message={{ text: 'subsubtext' }} />
-      <Text type="subsubtext" message={{ id: 'lorem' }} />
+      <Text fontSize="2xl" message={{ text: 'Text' }} />
+      <Text fontSize="xs" message={{ text: '2xl' }} />
+      <Text fontSize="2xl" message={{ id: 'lorem' }} />
+      <Text fontSize="xs" message={{ text: 'xl' }} />
+      <Text fontSize="xl" message={{ id: 'lorem' }} />
+      <Text fontSize="xs" message={{ text: 'lg' }} />
+      <Text fontSize="lg" message={{ id: 'lorem' }} />
+      <Text fontSize="xs" message={{ text: 'md' }} />
+      <Text fontSize="md" message={{ id: 'lorem' }} />
+      <Text fontSize="xs" message={{ text: 'sm' }} />
+      <Text fontSize="sm" message={{ id: 'lorem' }} />
+      <Text fontSize="xs" message={{ text: 'xs' }} />
+      <Text fontSize="xs" message={{ id: 'lorem' }} />
     </Root>
   );
 }
