@@ -1,10 +1,20 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
-type Props = {
+import { useIntl } from 'react-intl';
+
+import { Message, messageToString } from '@utils/message';
+
+export type ButtonProps = {
   onClick?: () => void;
-  message: string;
+  message: Message;
 };
 
-export const Button = ({ onClick, message }: Props) => {
-  return <div onClick={onClick}>{message}</div>;
+export const Button = ({ onClick, message }: ButtonProps) => {
+  const intl = useIntl();
+  const content = useMemo(
+    () => messageToString(message, intl),
+    [intl, message],
+  );
+
+  return <div onClick={onClick}>{content}</div>;
 };

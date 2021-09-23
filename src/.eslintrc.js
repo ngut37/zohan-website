@@ -50,9 +50,9 @@ module.exports = {
     'plugin:react/recommended',
     'prettier',
     'plugin:prettier/recommended',
-    'prettier/@typescript-eslint',
     'plugin:import/typescript',
-    //'plugin:react-hooks/recommended',
+    // 'prettier/@typescript-eslint',
+    // 'plugin:react-hooks/recommended',
   ],
   env: {
     browser: true,
@@ -201,6 +201,11 @@ module.exports = {
           },
           {
             pattern: '@templates/**',
+            group: 'internal',
+            position: 'before',
+          },
+          {
+            pattern: '@modules/**',
             group: 'internal',
             position: 'before',
           },
