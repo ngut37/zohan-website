@@ -1,6 +1,7 @@
 // Icons should be imported from https://heroicons.com/ to stay consistent (export as JSX)
 
 import React, { PropsWithChildren, HTMLAttributes } from 'react';
+
 import clsx from 'clsx';
 
 import { IconType, iconTypes, BaseIconProps } from './icons/icon-types';

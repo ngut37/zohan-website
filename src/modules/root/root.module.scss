@@ -1,0 +1,7 @@
+@use 'styles/colors';
+
+.root {
+  width: 100%;
+  height: 70px;
+  background-color: rgba($color: colors.$black, $alpha: 0.3);
+}

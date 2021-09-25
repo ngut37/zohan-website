@@ -2,17 +2,15 @@ import React from 'react';
 
 import { colors } from '@utils/colors';
 
-import { Button, Icon, IconType } from '@atoms';
+import { Button, ButtonProps, Icon, IconType } from '@atoms';
 
 import classes from './button-with-icon.module.scss';
 
-type Props = {
-  onClick?: () => void;
-  buttonMessage: string;
+type Props = ButtonProps & {
   icon?: IconType;
 };
 
-export const ButtonWithIcon = ({ onClick, buttonMessage, icon }: Props) => {
+export const ButtonWithIcon = ({ onClick, message, icon }: Props) => {
   return (
     <>
       {icon && (
@@ -22,7 +20,7 @@ export const ButtonWithIcon = ({ onClick, buttonMessage, icon }: Props) => {
           stroke={colors.azure_radiance}
         />
       )}
-      <Button message={buttonMessage} onClick={onClick} />
+      <Button message={message} onClick={onClick} />
     </>
   );
 };
