@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { colors } from '@utils/colors';
-
 import { Button, ButtonProps, Icon, IconType } from '@atoms';
+
+import { colors } from '@styles';
 
 import classes from './button-with-icon.module.scss';
 
@@ -17,7 +17,7 @@ export const ButtonWithIcon = ({ onClick, message, icon }: Props) => {
         <Icon
           className={classes.icon}
           icon="badge-check"
-          stroke={colors.azure_radiance}
+          stroke={colors.interdimensional_blue.hex()}
         />
       )}
       <Button message={message} onClick={onClick} />

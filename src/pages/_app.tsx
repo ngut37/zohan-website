@@ -1,12 +1,21 @@
-import '@styles/normalize.scss';
-import '@styles/global.scss';
-
 import React from 'react';
 
 import { AppProps } from 'next/app';
 
-function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
+import { ChakraProvider, CSSReset } from '@chakra-ui/react';
+
+import '@styles/global.scss';
+import '@styles/normalize.scss';
+
+import { theme } from '@styles';
+
+function App({ Component, pageProps }: AppProps) {
+  return (
+    <ChakraProvider theme={theme}>
+      <CSSReset />
+      <Component {...pageProps} />
+    </ChakraProvider>
+  );
 }
 
-export default MyApp;
+export default App;
