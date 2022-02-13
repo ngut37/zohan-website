@@ -12,26 +12,26 @@ export const registerMessages: MessageObject = {
   'register.input.password_confirm.label': 'Heslo znovu',
   'register.input.gender.label': 'Pohlaví',
   'register.input.birth_year.label': 'Rok narození',
+  'register.input.phone_number.label': 'Telefonní číslo',
 
   /* INPUT PLACEHOLDERS */
-  'register.input.first_name.placeholder': 'Křesní',
-  'register.input.last_name.placeholder': 'Příjmení',
-  'register.input.email.placeholder': 'E-mailová adresa',
+  'register.input.name.placeholder': 'např. Jan Novák',
+  'register.input.email.placeholder': 'vas@email.cz',
   'register.input.password.placeholder': 'Heslo',
-  'register.input.password_confirm.placeholder': 'Heslo znovu',
+  'register.input.password_confirm.placeholder': 'Potvrďte heslo',
 
   /* ERRORS */
   'register.input.name.error.min': `Jméno musí obsahovat nejméně {length} {length, plural, 
     one {znak}
     few {znaky}
     other {znaků}
-  }`,
+    }`,
   'register.input.name.error.max': `Jméno přesahuje maximální délku {length} {length, plural, 
       one {znak}
       few {znaky}
       other {znaků}
     }`,
-  'register.input.first_name.error.required': 'Doplňte prosím křesní jméno',
+  'register.input.name.error.required': 'Doplňte prosím své jméno',
   'register.input.last_name.error.required': 'Doplňte prosím přijmení',
   'register.input.email.error.format':
     'E-mailová adresa není ve správném tvaru',
@@ -42,16 +42,15 @@ export const registerMessages: MessageObject = {
   'register.input.password.error.min': 'Heslo musí obsahovat nejméně 6 znaků',
   'register.input.password.error.max': 'Heslo je příliš dlouhé',
   'register.input.password_confirm.error.match': 'Zadaná hesla nesouhlasí',
-  'register.input.gender.error.required': 'Heslo nemůžse být prázdné',
-  'register.input.birth_year.error.min':
-    'Rok narození nesmí být starší než 1900',
-  'register.input.birth_year.error.max':
-    'Rok narození nesmí být po {maxBirthYear}',
+  'register.input.phone_number.error.format': 'Zadejte platné číslo',
+
   'register.error.general': 'Při registraci došlo k chybě',
 
   /* BUTTONS */
-  'register.input.button': 'Registrovat se',
+  'register.button.submit': 'Registrovat se',
+  'register.button.o_auth.google': 'Google',
+  'register.button.o_auth.facebook': 'Facebook',
 
   /* LINKS */
-  'register.link.login': 'Už máš účet? Přejdi na přihlašování.',
+  'register.link.login': 'Už máte účet? Přejděte na přihlašování.',
 };

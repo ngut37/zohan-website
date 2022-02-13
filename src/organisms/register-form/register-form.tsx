@@ -1,26 +1,25 @@
 import React, { useMemo, useState } from 'react';
 
-// import { useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import { useIntl } from 'react-intl';
+import { FaFacebook } from 'react-icons/fa';
+import { FcGoogle } from 'react-icons/fc';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import * as yup from 'yup';
+import { signIn } from 'next-auth/client';
+
+import { config } from '@config/config';
 
 import { yupResolver } from '@hookform/resolvers/yup';
-
-import { useRouter } from 'next/router';
-
-import { Gender, GENDERS, ROLES } from '@api/auth/types';
 
 import { register as authRegister } from '@api/auth/auth';
 
 import { Message, messageToString } from '@utils/message';
 import { messageIdConcat } from '@utils/message-id-concat';
+import { yup } from '@utils/yup';
 
 import { Button, Input, Link, Text } from '@atoms';
 
 import { InputLabel } from '@molecules/input-label';
-
-import { RadioSelect, RadioItem } from '@molecules/radio-select';
 
 import {
   Alert,
@@ -29,11 +28,6 @@ import {
   CloseButton,
   Divider,
   Flex,
-  FormControl,
-  FormErrorMessage,
-  NumberInput,
-  NumberInputField,
-  Stack,
   VStack,
 } from '@chakra-ui/react';
 
@@ -42,17 +36,12 @@ import { colors } from '@styles';
 import classes from './register-form.module.scss';
 
 type Inputs = {
-  firstName: string;
-  lastName: string;
+  name: string;
   email: string;
   password: string;
   passwordConfirm: string;
-  birthYear: number;
-  gender?: Gender;
+  phoneNumber: string;
 };
-
-const minBirthYear = 1900;
-const maxBirthYear = new Date().getFullYear();
 
 const minNameLength = 2;
 const maxNameLength = 64;
@@ -66,7 +55,7 @@ export const RegisterForm = () => {
   const router = useRouter();
 
   const schema = yup.object().shape({
-    firstName: yup
+    name: yup
       .string()
       .strict()
       .min(
@@ -89,34 +78,7 @@ export const RegisterForm = () => {
           intl,
         ),
       )
-      .required(
-        messageToString({ id: m('input.first_name.error.required') }, intl),
-      ),
-    lastName: yup
-      .string()
-      .min(
-        minNameLength,
-        messageToString(
-          {
-            id: m('input.name.error.min'),
-            values: { length: minNameLength },
-          },
-          intl,
-        ),
-      )
-      .max(
-        maxNameLength,
-        messageToString(
-          {
-            id: m('input.name.error.max'),
-            values: { length: maxNameLength },
-          },
-          intl,
-        ),
-      )
-      .required(
-        messageToString({ id: m('input.last_name.error.required') }, intl),
-      ),
+      .required(messageToString({ id: m('input.name.error.required') }, intl)),
     email: yup
       .string()
       .email(messageToString({ id: m('input.email.error.format') }, intl))
@@ -143,25 +105,15 @@ export const RegisterForm = () => {
       .required(
         messageToString({ id: m('input.password_confirm.error.match') }, intl),
       ),
-    gender: yup.string(),
-    birthYear: yup
-      .number()
-      .min(
-        minBirthYear,
-        messageToString({ id: m('input.birth_year.error.min') }, intl),
-      )
-      .max(
-        maxBirthYear,
-        messageToString(
-          { id: m('input.birth_year.error.max'), values: { maxBirthYear } },
-          intl,
-        ),
-      )
-      .notRequired()
-      .nullable()
-      .transform((_, value) =>
-        value && !Number.isNaN(value) ? Number(value) : null,
+    phoneNumber: yup.string().phoneNumber(
+      ['cs-CZ', 'sk-SK'],
+      messageToString(
+        {
+          id: m('input.phone_number.error.format'),
+        },
+        intl,
       ),
+    ),
   });
 
   const [submitting, setSubmitting] = useState(false);
@@ -169,15 +121,9 @@ export const RegisterForm = () => {
     { statusCode?: number; errorMessage: Message } | undefined
   >(undefined);
 
-  const genderRadioItems: RadioItem[] = Object.keys(GENDERS).map((gender) => ({
-    message: { id: `gender.${gender}` },
-    radioProps: { value: gender },
-  }));
-
   const {
     register,
     handleSubmit,
-    setValue,
     formState: { errors },
     setError,
   } = useForm<Inputs>({
@@ -192,7 +138,6 @@ export const RegisterForm = () => {
     try {
       const { success } = await authRegister({
         ...restData,
-        roles: [ROLES.client],
       });
       if (success) {
         router.push('/component-pallette');
@@ -226,47 +171,23 @@ export const RegisterForm = () => {
         <VStack spacing={5}>
           {/* NAME */}
           <InputLabel message={{ id: m('input.name.label') }} />
-          <Stack
-            direction={['column', 'row']}
-            spacing="5px"
-            w="100%"
-            align="flex-start"
-          >
-            <Input
-              inputProps={{
-                id: 'firstName',
-                placeholder: messageToString(
-                  { id: m('input.first_name.placeholder') },
-                  intl,
-                ),
-                variant: 'flushed',
-                ...register('firstName'),
-              }}
-              formControlProps={{
-                isInvalid: Boolean(errors.firstName),
-                w: ['100%', '50%'],
-              }}
-              error={errors?.firstName}
-            />
-            <Input
-              inputProps={{
-                id: 'lastName',
-                placeholder: messageToString(
-                  { id: m('input.last_name.placeholder') },
-                  intl,
-                ),
-                variant: 'flushed',
-                ...register('lastName'),
-              }}
-              formControlProps={{
-                isInvalid: Boolean(errors.lastName),
-                w: ['100%', '50%'],
-              }}
-              error={errors?.lastName}
-            />
-          </Stack>
+          <Input
+            inputProps={{
+              id: 'name',
+              placeholder: messageToString(
+                { id: m('input.name.placeholder') },
+                intl,
+              ),
+              variant: 'flushed',
+              ...register('name'),
+            }}
+            formControlProps={{
+              isInvalid: Boolean(errors.name),
+            }}
+            error={errors?.name}
+          />
 
-          {/* PASSWORD */}
+          {/* EMAIL */}
           <InputLabel message={{ id: m('input.email.label') }} />
           <Input
             inputProps={{
@@ -283,6 +204,8 @@ export const RegisterForm = () => {
             }}
             error={errors?.email}
           />
+
+          {/* PASSWORD */}
           <InputLabel message={{ id: m('input.password.label') }} />
           <Input
             inputProps={{
@@ -314,52 +237,69 @@ export const RegisterForm = () => {
             }}
             error={errors?.passwordConfirm}
           />
-          {/* GENDER */}
-          <InputLabel message={{ id: m('input.gender.label') }} />
-          <RadioSelect
-            items={genderRadioItems}
-            formControlProps={{ isInvalid: Boolean(errors.gender) }}
-            stackDirection={['column', 'row']}
-            radioGroupProps={{
-              colorScheme: 'teal',
-              w: '100%',
-              onChange: (radioGroupValue) =>
-                setValue('gender', radioGroupValue as Gender),
+
+          {/* PHONE NUMBER */}
+          <InputLabel message={{ id: m('input.phone_number.label') }} />
+          <Input
+            inputProps={{
+              id: 'phoneNumber',
+              autoComplete: 'tel',
+              ...register('phoneNumber'),
             }}
-            stackProps={{ justifyContent: 'space-between' }}
-            error={errors.gender}
+            formControlProps={{
+              isInvalid: Boolean(errors.phoneNumber),
+            }}
+            error={errors?.phoneNumber}
           />
 
-          {/* BIRTH YEAR */}
-          <InputLabel message={{ id: m('input.birth_year.label') }} />
-          <FormControl isInvalid={Boolean(errors.birthYear)}>
-            <NumberInput w="100%" variant="flushed">
-              <NumberInputField {...register('birthYear')} />
-            </NumberInput>
-            {errors.birthYear && (
-              <FormErrorMessage>{errors.birthYear.message}</FormErrorMessage>
-            )}
-          </FormControl>
           <Button
             size="lg"
             type="submit"
             width="100%"
-            message={{ id: m('input.button') }}
+            message={{ id: m('button.submit') }}
             isLoading={submitting}
           />
         </VStack>
       </form>
     );
   }, [
-    errors.firstName,
-    errors.lastName,
+    errors.name,
     errors.email,
     errors.password,
     errors.passwordConfirm,
-    errors.gender,
-    errors.birthYear,
+    errors.phoneNumber,
     submitting,
   ]);
+
+  const oAuthSection = useMemo(() => {
+    return (
+      <Flex alignItems="center" justifyContent="space-between" width="100%">
+        <Button
+          width="49%"
+          variant="outline"
+          color="gray.500"
+          leftIcon={<FcGoogle color="white" />}
+          message={{ id: 'google' }}
+          onClick={() =>
+            signIn('google', {
+              callbackUrl: `${config.APP_URL}/new-oauth-user-landing`,
+            })
+          }
+        />
+        <Button
+          width="49%"
+          colorScheme="facebook"
+          leftIcon={<FaFacebook color="white" />}
+          message={{ id: 'facebook' }}
+          onClick={() =>
+            signIn('facebook', {
+              callbackUrl: `${config.APP_URL}/new-oauth-user-landing`,
+            })
+          }
+        />
+      </Flex>
+    );
+  }, []);
 
   const loginError = useMemo(() => {
     if (showAuthError?.errorMessage)
@@ -380,14 +320,27 @@ export const RegisterForm = () => {
   }, [showAuthError?.errorMessage, intl, setShowAuthError]);
 
   return (
-    <Flex width="100%" minH="80vh" p="70px" justify="center" align="center">
+    <Flex
+      width="100%"
+      minH="80vh"
+      p="70px"
+      justify="space-evenly"
+      align="center"
+    >
       <Flex
-        w="100%"
+        width="100%"
         maxW="1200px"
         direction={['column', 'row-reverse']}
         justify={['center', 'space-evenly']}
         align={['center', 'flex-start']}
       >
+        <Flex
+          display={['none', 'none', 'none', 'flex']}
+          width="600px"
+          marginTop="20px"
+        >
+          <img src="/static/img/registration.jpg" />
+        </Flex>
         <Flex
           py="40px"
           px={['20px', '40px']}
@@ -408,10 +361,16 @@ export const RegisterForm = () => {
               fontSize="sm"
             />
           </VStack>
-          <Flex direction="column" justify="center" align="center" width="100%">
+          <VStack
+            direction="column"
+            justify="center"
+            align="center"
+            width="100%"
+          >
             {form}
+            {oAuthSection}
             {loginError}
-          </Flex>
+          </VStack>
           <Divider orientation="horizontal" my="10px" />
           <Link href="/login">
             <Button

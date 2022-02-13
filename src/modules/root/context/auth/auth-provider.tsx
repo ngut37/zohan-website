@@ -7,9 +7,9 @@ import React, {
 } from 'react';
 
 import { useRouter } from 'next/router';
+import { session } from 'next-auth/client';
 
-import { me } from '@api/auth/auth';
-
+import { me, oAuthLogin } from '@api/auth/auth';
 import { User } from '@api/auth/types';
 
 import { Flex, Spinner } from '@chakra-ui/react';
@@ -26,15 +26,25 @@ export const AuthProvider = ({ protectedPage = false, children }: Props) => {
   const [auth, setAuthState] = useState<User | undefined>();
 
   const authenticate = useCallback(async () => {
-    const data = await me();
+    let data = await me();
     if (data?.user) {
+      // try custom auth
       setAuthState(data.user);
-    } else if (protectedPage) {
-      // ! This reroute is too sudden. Display error toast for clarity.
-      router.push('./login');
+    } else if (!data) {
+      // try OAuth login
+      const sessionKamo = await session();
+      await oAuthLogin({ email: sessionKamo?.user?.email || '' });
+      data = await me();
+      data && setAuthState(data.user);
+
+      if (protectedPage && !data) {
+        // re-route user to login page if not authenticated
+        // ! This reroute is too sudden. Display error toast for clarity.
+        router.push('./login');
+      }
     }
     setLoading(false);
-  }, []);
+  }, [session]);
 
   useEffect(() => {
     (async () => {

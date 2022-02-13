@@ -1,9 +1,11 @@
 import React, { useMemo, useState } from 'react';
 
+import { signIn } from 'next-auth/client';
 import { useRouter } from 'next/router';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { HiOutlineAtSymbol, HiOutlineLockClosed } from 'react-icons/hi';
-import * as yup from 'yup';
+import { FaFacebook } from 'react-icons/fa';
+import { FcGoogle } from 'react-icons/fc';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -12,7 +14,7 @@ import { useIntl } from 'react-intl';
 import { login } from '@api/auth/auth';
 
 import { messageToString } from '@utils/message';
-
+import { yup } from '@utils/yup';
 import { messageIdConcat } from '@utils/message-id-concat';
 
 import { Button, Input, Link, Text } from '@atoms';
@@ -142,6 +144,30 @@ export const LoginForm = () => {
     );
   }, [errors.email, errors.password, submitting]);
 
+  const oAuthSection = useMemo(() => {
+    return (
+      <Flex alignItems="center" justifyContent="space-between" width="100%">
+        <Button
+          width="49%"
+          variant="outline"
+          color="gray.500"
+          leftIcon={<FcGoogle color="white" />}
+          message={{ id: 'google' }}
+          onClick={() =>
+            signIn('google', { callbackUrl: '/new-oauth-user-landing' })
+          }
+        />
+        <Button
+          width="49%"
+          colorScheme="facebook"
+          leftIcon={<FaFacebook color="white" />}
+          message={{ id: 'facebook' }}
+          onClick={() => signIn('facebook')}
+        />
+      </Flex>
+    );
+  }, []);
+
   const loginError = useMemo(() => {
     if (showAuthError)
       return (
@@ -202,6 +228,7 @@ export const LoginForm = () => {
           </VStack>
         </Flex>
         <Flex
+          minW="400px"
           py="40px"
           px={['20px', '40px']}
           direction="column"
@@ -219,10 +246,16 @@ export const LoginForm = () => {
             size="lg"
             mb="40px"
           />
-          <Flex direction="column" justify="center" align="center" width="100%">
+          <VStack
+            direction="column"
+            justify="center"
+            align="center"
+            width="100%"
+          >
             {form}
+            {oAuthSection}
             {loginError}
-          </Flex>
+          </VStack>
           <Divider orientation="horizontal" my="10px" />
           <Link href="/register">
             <Button

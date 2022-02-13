@@ -10,8 +10,11 @@ export type AuthContextType = {
 // set defaults here
 export const AuthContext = createContext<AuthContextType>({
   auth: {
-    userId: '',
-    roles: [],
+    id: '',
+    email: '',
+    name: '',
+    exp: 0,
+    iat: 0,
   },
   authenticate: async () => {},
 });

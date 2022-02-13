@@ -8,4 +8,10 @@ export const globalMessages: MessageObject = {
   'gender.male': 'Muž',
   'gender.female': 'Žena',
   'gender.other': 'Jiné',
+
+  google: 'Google',
+  facebook: 'Facebook',
+
+  // ERRORS
+  'error.api': 'Došlo k chybě, zkuste to prosím později',
 };

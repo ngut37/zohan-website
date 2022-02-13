@@ -1,4 +1,13 @@
 // next.config.js
+// ! THIS IN NOT SAFE - hacked for now
+const ContentSecurityPolicy = `
+  default-src * ;
+  script-src *;
+  child-src *;
+  style-src *;
+  img-src *;
+`;
+
 module.exports = {
   async headers() {
     return [
@@ -17,8 +26,16 @@ module.exports = {
             value:
               'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version',
           },
+          {
+            key: 'Content-Security-Policy',
+            value: ContentSecurityPolicy.replace(/\s{2,}/g, ' ').trim(),
+          },
         ],
       },
     ];
+  },
+  images: {
+    disableStaticImages: true,
+    domains: ['localhost'],
   },
 };

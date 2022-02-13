@@ -4,7 +4,7 @@ import { LoginForm } from '@organisms/login-form';
 
 import { Root } from '@modules/root';
 
-export default function App() {
+export default function Login() {
   return (
     <Root>
       <LoginForm />

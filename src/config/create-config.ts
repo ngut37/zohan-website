@@ -2,7 +2,7 @@ import { Environments, Config, EnvironmentName } from './types';
 
 export const createConfig = (envs: Environments, defaultConfig: Config) => {
   // ENVIRONMENT ENV VARIABLE
-  const APP_ENV = (process.env.APP_ENV as EnvironmentName) || 'development';
+  const APP_ENV = process.env.NEXT_PUBLIC_APP_ENV as EnvironmentName;
 
   // MERGE DEFAULT CONFIG
   let defaults: Config = {

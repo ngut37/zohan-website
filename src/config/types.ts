@@ -3,6 +3,12 @@ export type Config = Partial<{
   APP_ENV: EnvironmentName;
 
   API_URL: string;
+  APP_URL: string;
+  GOOGLE_ID: string;
+  GOOGLE_SECRET: string;
+  FACEBOOK_CLIENT_ID: string;
+  FACEBOOK_CLIENT_SECRET: string;
+  NEXTAUTH_URL: string;
 
   TESTING_EMAIL: string;
 }>;
