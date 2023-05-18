@@ -7,13 +7,12 @@ import { config } from '@config/config';
 import { emailExists, register } from '@api/auth';
 import { OAuthType } from '@api/auth/types';
 
-console.log(config.GOOGLE_ID);
-console.log(config.GOOGLE_SECRET);
-
 export default NextAuth({
-  // session: {
-  //   jwt: true,
-  //   maxAge: 30 * 24 * 60 * 60,
+  session: {
+    jwt: true,
+    maxAge: 30 * 24 * 60 * 60,
+  },
+  debug: true,
   // },
   providers: [
     // OAuth authentication providers
@@ -21,10 +20,10 @@ export default NextAuth({
       clientId: config.GOOGLE_ID,
       clientSecret: config.GOOGLE_SECRET,
     }),
-    Providers.Facebook({
-      clientId: config.FACEBOOK_CLIENT_ID,
-      clientSecret: config.FACEBOOK_CLIENT_SECRET,
-    }),
+    // Providers.Facebook({
+    //   clientId: config.FACEBOOK_CLIENT_ID,
+    //   clientSecret: config.FACEBOOK_CLIENT_SECRET,
+    // }),
   ],
   pages: {
     signIn: '/login',

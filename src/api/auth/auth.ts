@@ -1,4 +1,6 @@
-import { apiClient } from '../api-client';
+import { ResponseResult } from '@api/types';
+
+import { apiClient, protectedApiClient } from '../api-client';
 
 import { OAuthType, User } from './types';
 
@@ -7,19 +9,19 @@ type LoginBody = {
   password: string;
 };
 
-type LoginResult = {
-  success: boolean;
+type AuthorizationData = {
+  accessToken: string;
 };
 
-export const login = async (body: LoginBody) => {
-  const response = await apiClient.request<LoginResult>({
+export const loginOrFail = async (body: LoginBody) => {
+  const response = await apiClient.request<ResponseResult<AuthorizationData>>({
     url: '/auth/login',
     method: 'POST',
     data: body,
     withCredentials: true,
   });
 
-  return response.data;
+  return response.data.data;
 };
 
 type OAuthLoginBody = {
@@ -27,31 +29,19 @@ type OAuthLoginBody = {
   // password: string;
 };
 
-type OAuthLoginResult = {
-  success: boolean;
+export const oAuthLoginOrFail = async (body: OAuthLoginBody) => {
+  const response = await apiClient.request<ResponseResult<AuthorizationData>>({
+    url: '/auth/o-auth-login',
+    method: 'POST',
+    data: body,
+    withCredentials: true,
+  });
+
+  return response.data.data;
 };
 
-export const oAuthLogin = async (body: OAuthLoginBody) => {
-  try {
-    const response = await apiClient.request<OAuthLoginResult>({
-      url: '/auth/o-auth-login',
-      method: 'POST',
-      data: body,
-      withCredentials: true,
-    });
-
-    return response.data;
-  } catch {
-    return undefined;
-  }
-};
-
-type EmptyResult = {
-  success: boolean;
-};
-
-export const logout = async () => {
-  const response = await apiClient.request<EmptyResult>({
+export const logoutOrFail = async () => {
+  const response = await apiClient.request<ResponseResult>({
     url: '/auth/logout',
     method: 'POST',
     withCredentials: true,
@@ -75,12 +65,30 @@ type OAuthRegisterBody = {
   };
 };
 
-export async function register(body: RegisterBody): Promise<EmptyResult>;
-export async function register(body: OAuthRegisterBody): Promise<EmptyResult>;
+export const refreshToken = async () => {
+  try {
+    const response = await protectedApiClient.request<
+      ResponseResult<AuthorizationData>
+    >({
+      url: '/auth/refresh-token',
+      method: 'GET',
+      withCredentials: true,
+    });
+
+    return response.data.data;
+  } catch {
+    return undefined;
+  }
+};
+
+export async function register(body: RegisterBody): Promise<ResponseResult>;
+export async function register(
+  body: OAuthRegisterBody,
+): Promise<ResponseResult>;
 export async function register(
   body: RegisterBody | OAuthRegisterBody,
-): Promise<EmptyResult> {
-  const response = await apiClient.request<EmptyResult>({
+): Promise<ResponseResult> {
+  const response = await apiClient.request<ResponseResult>({
     url: '/auth/register',
     method: 'POST',
     data: body,
@@ -89,34 +97,8 @@ export async function register(
   return response.data;
 }
 
-type MeResult = {
-  success: boolean;
-  data: {
-    accessToken: string;
-    user: User;
-  };
-};
-
-export const me = async () => {
-  try {
-    const response = await apiClient.request<MeResult>({
-      url: '/auth/me',
-      method: 'GET',
-      withCredentials: true,
-    });
-    if (response?.data) return response.data.data;
-  } catch {
-    return undefined;
-  }
-};
-
-type EmailExitsResult = {
-  success: boolean;
-  data: boolean;
-};
-
 export const emailExists = async (email: string) => {
-  const response = await apiClient.request<EmailExitsResult>({
+  const response = await apiClient.request<ResponseResult<boolean>>({
     url: `/auth/email-exists/${email}`,
     method: 'GET',
   });
@@ -130,14 +112,9 @@ type UpdateUserBody = {
   phoneNumber?: string;
 };
 
-type UpdateUserResult = {
-  success: boolean;
-  data: User;
-};
-
 export const updateUser = async (body: UpdateUserBody) => {
   try {
-    const response = await apiClient.request<UpdateUserResult>({
+    const response = await apiClient.request<ResponseResult<User>>({
       url: `/auth/update`,
       method: 'POST',
       data: body,

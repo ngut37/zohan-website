@@ -2,6 +2,8 @@ import { createConfig } from './create-config';
 import { Config } from './types';
 
 const defaultConfig: Config = {
+  ACCESS_TOKEN_SECRET: 'a2b933c66b887b0c973e865acb033a5f',
+
   GOOGLE_ID:
     '1133750197-ram3lpoeeujf5rs8gmh6faa900c899pi.apps.googleusercontent.com',
   GOOGLE_SECRET: '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',

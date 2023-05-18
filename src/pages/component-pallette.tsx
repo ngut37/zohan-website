@@ -1,25 +1,13 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 
 import { Text } from '@atoms';
-
-import { ButtonWithIcon } from '@organisms/button-with-icon';
 
 import { Root } from '@modules/root';
 
 export default function ComponentPallette() {
-  const onButtonClick = useCallback(
-    () => console.log('Hey, do not touch me!'),
-    [],
-  );
-
   return (
     <Root protectedPage>
       <Text fontSize="h1" message={{ text: 'ButtonWithIcon' }} />
-      <ButtonWithIcon
-        icon="badge-check"
-        message={{ text: 'Click me!' }}
-        onClick={onButtonClick}
-      />
       <Text fontSize="2xl" message={{ text: 'Text' }} />
       <Text fontSize="xs" message={{ text: '2xl' }} />
       <Text fontSize="2xl" message={{ id: 'lorem' }} />

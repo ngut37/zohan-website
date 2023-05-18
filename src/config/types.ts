@@ -2,6 +2,8 @@ export type Config = Partial<{
   PORT: number;
   APP_ENV: EnvironmentName;
 
+  ACCESS_TOKEN_SECRET: string;
+
   API_URL: string;
   APP_URL: string;
   GOOGLE_ID: string;
