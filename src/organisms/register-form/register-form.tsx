@@ -2,7 +2,6 @@ import React, { useMemo, useState } from 'react';
 
 import { useRouter } from 'next/router';
 import { useIntl } from 'react-intl';
-import { FaFacebook } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { signIn } from 'next-auth/client';
@@ -275,24 +274,13 @@ export const RegisterForm = () => {
     return (
       <Flex alignItems="center" justifyContent="space-between" width="100%">
         <Button
-          width="49%"
+          width="100%"
           variant="outline"
           color="gray.500"
           leftIcon={<FcGoogle color="white" />}
           message={{ id: 'google' }}
           onClick={() =>
             signIn('google', {
-              callbackUrl: `${config.APP_URL}/new-oauth-user-landing`,
-            })
-          }
-        />
-        <Button
-          width="49%"
-          colorScheme="facebook"
-          leftIcon={<FaFacebook color="white" />}
-          message={{ id: 'facebook' }}
-          onClick={() =>
-            signIn('facebook', {
               callbackUrl: `${config.APP_URL}/new-oauth-user-landing`,
             })
           }

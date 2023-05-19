@@ -1,20 +1,22 @@
-import { createContext } from 'react';
+import { createContext, Dispatch, SetStateAction, useContext } from 'react';
 
 import { User } from '@api/auth/types';
 
 export type AuthContextType = {
   auth: User | undefined;
   authenticate: () => Promise<void>;
+  logout: () => Promise<void>;
+  loading: boolean;
+  setLoading: Dispatch<SetStateAction<boolean>>;
 };
+
+export const useAuth = () => useContext(AuthContext);
 
 // set defaults here
 export const AuthContext = createContext<AuthContextType>({
-  auth: {
-    id: '',
-    email: '',
-    name: '',
-    exp: 0,
-    iat: 0,
-  },
+  auth: undefined,
   authenticate: async () => {},
+  logout: async () => {},
+  loading: true,
+  setLoading: () => {},
 });

@@ -7,10 +7,17 @@ import React, {
 } from 'react';
 
 import { useRouter } from 'next/router';
-import { session } from 'next-auth/client';
+// import { session } from 'next-auth/client';
 
-import { me, oAuthLogin } from '@api/auth/auth';
+import { logoutOrFail, refreshToken } from '@api/auth/auth';
 import { User } from '@api/auth/types';
+
+import {
+  getAccessToken,
+  parseAccessToken,
+  removeAccessToken,
+  saveAccessTokenToken,
+} from '@utils/storage/auth';
 
 import { Flex, Spinner } from '@chakra-ui/react';
 
@@ -26,29 +33,76 @@ export const AuthProvider = ({ protectedPage = false, children }: Props) => {
   const [auth, setAuthState] = useState<User | undefined>();
 
   const authenticate = useCallback(async () => {
-    let data = await me();
-    if (data?.user) {
-      // try custom auth
-      setAuthState(data.user);
-    } else if (!data) {
-      // try OAuth login
-      const sessionKamo = await session();
-      await oAuthLogin({ email: sessionKamo?.user?.email || '' });
-      data = await me();
-      data && setAuthState(data.user);
+    // TODO: implement oAuth login
 
-      if (protectedPage && !data) {
-        // re-route user to login page if not authenticated
-        // ! This reroute is too sudden. Display error toast for clarity.
-        router.push('./login');
+    setLoading(true);
+    if (!protectedPage) {
+      // A not a protected page -> no need to authenticate
+      const accessToken = getAccessToken();
+      const data = parseAccessToken(accessToken, {});
+
+      // C access token is valid -> set auth state
+      if (data) {
+        setAuthState(data);
+      }
+
+      setLoading(false);
+      return;
+    }
+
+    // check if access token is expired
+    const accessToken = getAccessToken();
+    let data = parseAccessToken(accessToken, {});
+
+    // B access token not present or invalid -> get new access token using refresh token
+    if (!data) {
+      const { accessToken: refreshedAccessToken } =
+        (await refreshToken()) || {};
+
+      if (!refreshedAccessToken) {
+        // B_1 refresh token is not valid/expired -> reroute to login page
+        removeAccessToken();
+        await logout();
+        setAuthState(undefined);
+        router.push('/login');
+        return;
+      } else {
+        // B_2 persist new access token in localstorage
+        saveAccessTokenToken(refreshedAccessToken);
+        data = parseAccessToken(refreshedAccessToken, {});
+        router.reload();
       }
     }
+
+    // C access token is valid -> set auth state
+    if (data) {
+      setAuthState(data);
+    }
+
     setLoading(false);
-  }, [session]);
+    return;
+  }, [setAuthState, router]);
+
+  const logout = useCallback(async () => {
+    setLoading(true);
+    try {
+      removeAccessToken();
+      await logoutOrFail();
+      setAuthState(undefined);
+      router.push('/login');
+    } catch {
+      console.error('Logout API failed.');
+    }
+  }, [setAuthState, router, setLoading]);
 
   useEffect(() => {
     (async () => {
-      await authenticate();
+      try {
+        setLoading(true);
+        await authenticate();
+      } catch {
+        console.error('Authentication failed.');
+      }
     })();
   }, []);
 
@@ -67,11 +121,13 @@ export const AuthProvider = ({ protectedPage = false, children }: Props) => {
       ) : (
         children
       ),
-    [loading],
+    [loading, children],
   );
 
   return (
-    <AuthContext.Provider value={{ auth, authenticate }}>
+    <AuthContext.Provider
+      value={{ auth, authenticate, logout, loading, setLoading }}
+    >
       {content}
     </AuthContext.Provider>
   );

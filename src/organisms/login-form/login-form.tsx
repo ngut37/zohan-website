@@ -1,21 +1,22 @@
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 
 import { signIn } from 'next-auth/client';
 import { useRouter } from 'next/router';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { HiOutlineAtSymbol, HiOutlineLockClosed } from 'react-icons/hi';
-import { FaFacebook } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { useIntl } from 'react-intl';
 
-import { login } from '@api/auth/auth';
+import { getResponseStatusCode, HttpStatusCode } from '@api/utils';
+import { loginOrFail } from '@api/auth/auth';
 
 import { messageToString } from '@utils/message';
 import { yup } from '@utils/yup';
 import { messageIdConcat } from '@utils/message-id-concat';
+import { saveAccessTokenToken } from '@utils/storage/auth';
 
 import { Button, Input, Link, Text } from '@atoms';
 
@@ -27,6 +28,7 @@ import {
   Divider,
   Flex,
   InputLeftElement,
+  useToast,
   VStack,
 } from '@chakra-ui/react';
 
@@ -44,6 +46,7 @@ const m = messageIdConcat('login');
 export const LoginForm = () => {
   const intl = useIntl();
   const router = useRouter();
+  const toast = useToast();
 
   const schema = yup.object().shape({
     email: yup
@@ -70,19 +73,35 @@ export const LoginForm = () => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    setSubmitting(true);
-    try {
-      const { success } = await login(data);
-      if (success) {
+  const onSubmit: SubmitHandler<Inputs> = useCallback(
+    async (data) => {
+      setSubmitting(true);
+      try {
+        const { accessToken } = await loginOrFail(data);
+
+        saveAccessTokenToken(accessToken);
+
         router.push('/component-pallette');
+      } catch (error) {
+        if (
+          error.response &&
+          getResponseStatusCode(error.response) === HttpStatusCode.UNAUTHORIZED
+        ) {
+          setShowAuthError(true);
+        } else {
+          toast({
+            description: messageToString({ id: 'error.api' }, intl),
+            status: 'error',
+            duration: 10000,
+            isClosable: true,
+          });
+        }
+      } finally {
+        setSubmitting(false);
       }
-    } catch (e) {
-      setShowAuthError(true);
-    } finally {
-      setSubmitting(false);
-    }
-  };
+    },
+    [intl, router, toast, setSubmitting, setShowAuthError],
+  );
 
   const form = useMemo(() => {
     return (
@@ -156,13 +175,6 @@ export const LoginForm = () => {
           onClick={() =>
             signIn('google', { callbackUrl: '/new-oauth-user-landing' })
           }
-        />
-        <Button
-          width="49%"
-          colorScheme="facebook"
-          leftIcon={<FaFacebook color="white" />}
-          message={{ id: 'facebook' }}
-          onClick={() => signIn('facebook')}
         />
       </Flex>
     );

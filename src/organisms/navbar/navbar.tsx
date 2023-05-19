@@ -3,7 +3,7 @@ import React, { useCallback, useContext, useMemo } from 'react';
 import { HiOutlineLogout, HiOutlineUserCircle } from 'react-icons/hi';
 import { signOut, useSession } from 'next-auth/client';
 
-import { logout } from '@api/auth';
+import { logoutOrFail } from '@api/auth';
 
 import { Text, Link, Button } from '@atoms';
 
@@ -19,7 +19,7 @@ export const Navbar = () => {
 
   const requestLogout = useCallback(async () => {
     await signOut();
-    await logout();
+    await logoutOrFail();
     await authenticate();
   }, []);
 
