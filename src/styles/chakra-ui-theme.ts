@@ -4,7 +4,7 @@ import { createBreakpoints } from '@chakra-ui/theme-tools';
 import { screens } from './screens';
 
 const breakpoints = createBreakpoints({
-  sm: `${screens.md.toString()}px`,
+  sm: `${screens.sm.toString()}px`,
   md: `${screens.md.toString()}px`,
   lg: `${screens.lg.toString()}px`,
   xl: `${screens.xl.toString()}px`,

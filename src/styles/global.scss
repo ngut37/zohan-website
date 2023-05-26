@@ -12,6 +12,7 @@ body {
   position: relative;
   height: 100%;
   overscroll-behavior-y: contain;
+  overflow-x: hidden;
 
   @media print {
     width: 1080px;

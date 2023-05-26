@@ -22,12 +22,26 @@ type TextBaseProps = {
 
 export type TextProps = TextBaseProps & ChakraTextProps;
 
-export const Text = ({ type = 'text', message, ...textProps }: TextProps) => {
+export const Text = ({
+  type = 'text',
+  color = 'gray.800',
+  message,
+  ...textProps
+}: TextProps) => {
   const intl = useIntl();
 
   const content = messageToString(message, intl);
 
   if (type === 'heading')
-    return <ChakraHeading {...textProps}>{content}</ChakraHeading>;
-  else return <ChakraText {...textProps}>{content}</ChakraText>;
+    return (
+      <ChakraHeading color={color} {...textProps}>
+        {content}
+      </ChakraHeading>
+    );
+  else
+    return (
+      <ChakraText color={color} {...textProps}>
+        {content}
+      </ChakraText>
+    );
 };
