@@ -14,4 +14,8 @@ export const globalMessages: MessageObject = {
 
   // ERRORS
   'error.api': 'Došlo k chybě, zkuste to prosím později',
+
+  // BUTTONS
+  'button.filter': 'filtrovat',
+  'button.reset_filter': 'smazat filtry',
 };

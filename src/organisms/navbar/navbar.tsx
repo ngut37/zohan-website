@@ -1,71 +1,236 @@
-import React, { useCallback, useContext, useMemo } from 'react';
+import React, { useContext, useMemo } from 'react';
 
-import { HiOutlineLogout, HiOutlineUserCircle } from 'react-icons/hi';
-import { signOut, useSession } from 'next-auth/client';
+import { HiOutlineUserCircle } from 'react-icons/hi';
+import { GiHamburgerMenu } from 'react-icons/gi';
+// import { signOut, useSession } from 'next-auth/client';
+import { useRouter } from 'next/router';
 
-import { logoutOrFail } from '@api/auth';
+import { messageIdConcat } from '@utils/message-id-concat';
 
 import { Text, Link, Button } from '@atoms';
 
 import { AuthContext } from '@modules/root/context/auth';
 
-import { Flex, HStack } from '@chakra-ui/react';
+import {
+  Divider,
+  Drawer,
+  DrawerBody,
+  DrawerCloseButton,
+  DrawerContent,
+  DrawerOverlay,
+  Flex,
+  HStack,
+  Show,
+  useDisclosure,
+  VStack,
+} from '@chakra-ui/react';
 
 import { colors } from '@styles';
 
+const m = messageIdConcat('navbar');
+
 export const Navbar = () => {
-  const { auth, authenticate } = useContext(AuthContext);
-  const [session] = useSession();
+  const { auth, logout } = useContext(AuthContext);
+  // const [session] = useSession(); // TODO: reimplement this when implement next-auth oAuth
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const router = useRouter();
 
-  const requestLogout = useCallback(async () => {
-    await signOut();
-    await logoutOrFail();
-    await authenticate();
-  }, []);
+  const isLookUpServices = useMemo(() => {
+    return router.route.includes('/venues');
+  }, [router]);
 
-  const authLinks = useMemo(() => {
+  const isLandingPage = useMemo(() => {
+    return router.route === '/';
+  }, [router]);
+
+  const desktopAuthLinks = useMemo(() => {
     if (!auth)
       return (
-        <>
+        <HStack spacing="20px">
+          <Link href="/venues">
+            <Text
+              color="whitesmoke"
+              fontSize="lg"
+              message={{ id: m('link.look_up_services') }}
+              borderBottom={`1px solid ${
+                isLookUpServices ? 'whitesmoke' : 'transparent'
+              }`}
+            />
+          </Link>
+          <Divider orientation="vertical" />
           <Link href="/login">
             <Text
               color="whitesmoke"
-              fontSize="sm"
-              message={{ id: 'navbar.login' }}
+              fontSize="lg"
+              message={{ id: m('login') }}
             />
           </Link>
           <Link href="/register">
             <Text
               color="whitesmoke"
-              fontSize="sm"
-              message={{ id: 'navbar.register' }}
+              fontSize="lg"
+              message={{ id: m('register') }}
             />
           </Link>
-        </>
+        </HStack>
       );
     else {
-      const { user } = session || {};
-      const userAvatarUrl = user?.image || auth.avatarUrl;
-      const userAvatar = userAvatarUrl ? (
-        <Flex borderRadius="50%" overflow="hidden" width="30px" height="30px">
-          <img src={userAvatarUrl} />
-        </Flex>
-      ) : (
+      const { name } = auth || {};
+      // TODO: use code below after implementing profile
+      // const userAvatarUrl = user?.image || auth.avatarUrl;
+      // const userAvatar = userAvatarUrl ? (
+      //   <Flex borderRadius="50%" overflow="hidden" width="30px" height="30px">
+      //     <img src={userAvatarUrl} />
+      //   </Flex>
+      // ) : (
+      //   <HiOutlineUserCircle width="20px" color={colors.whitesmoke.hex()} />
+      // );
+
+      const userAvatar = (
         <HiOutlineUserCircle width="20px" color={colors.whitesmoke.hex()} />
       );
       return (
         <>
-          {userAvatar}
-          <Button
-            rightIcon={<HiOutlineLogout color="whitesmoke" />}
-            variant="solid"
-            onClick={requestLogout}
-            message={{ id: 'navbar.logout' }}
-          ></Button>
+          <HStack
+            spacing="50px"
+            height="40px"
+            paddingX="40px"
+            width="500px"
+            justifyContent="center"
+          >
+            <Link href="/services">
+              <Text
+                width="105px"
+                color="whitesmoke"
+                fontSize="lg"
+                message={{ id: m('link.look_up_services') }}
+                transition="border-bottom 0.2s"
+                borderBottom={`1px solid ${
+                  isLookUpServices ? 'whitesmoke' : 'transparent'
+                }`}
+                _hover={{ fontWeight: 'semibold' }}
+              />
+            </Link>
+          </HStack>
+          <HStack>
+            {userAvatar}
+            <Text color="white" message={{ text: name }} paddingRight="20px" />
+            <Button
+              variant="solid"
+              colorScheme="whiteAlpha"
+              onClick={logout}
+              message={{ id: 'navbar.logout' }}
+            />
+          </HStack>
         </>
       );
     }
-  }, [auth, session]);
+  }, [auth, isLookUpServices, logout]);
+
+  const mobileAuthLinks = useMemo(() => {
+    const userAvatar = (
+      <HiOutlineUserCircle
+        width="20px"
+        fontSize="30px"
+        color={colors.teal_500.hex()}
+      />
+    );
+
+    const drawer = (
+      <Drawer isOpen={isOpen} placement="right" onClose={onClose} size="xs">
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerCloseButton />
+          <DrawerBody
+            display="flex"
+            marginTop="60px"
+            marginBottom="20px"
+            flexDirection="column"
+            height="100%"
+            justifyContent="space-between"
+          >
+            <VStack width="100%" alignItems="flex-end" spacing="30px">
+              <Link href="/">
+                <Text
+                  color="teal"
+                  fontSize="xx-large"
+                  message={{ id: m('link.home') }}
+                  borderBottom={`1px solid ${
+                    isLandingPage ? 'teal' : 'transparent'
+                  }`}
+                />
+              </Link>
+              <Link href="/venues">
+                <Text
+                  color="teal"
+                  fontSize="xx-large"
+                  message={{ id: m('link.look_up_services') }}
+                  borderBottom={`1px solid ${
+                    isLookUpServices ? 'teal' : 'transparent'
+                  }`}
+                />
+              </Link>
+            </VStack>
+
+            {auth ? (
+              <VStack width="100%" alignItems="flex-end" spacing="30px">
+                <HStack>
+                  {userAvatar}
+                  <Text
+                    fontSize="xl"
+                    color="teal"
+                    message={{ text: auth.name }}
+                    fontWeight="semibold"
+                  />
+                </HStack>
+                <Button
+                  size="lg"
+                  variant="solid"
+                  onClick={logout}
+                  message={{ id: 'navbar.logout' }}
+                />
+              </VStack>
+            ) : (
+              <VStack width="100%" alignItems="flex-end" spacing="30px">
+                <Link href="/login">
+                  <Text
+                    color="teal"
+                    fontSize="x-large"
+                    message={{ id: m('login') }}
+                  />
+                </Link>
+                <Link href="/register">
+                  <Text
+                    color="teal"
+                    fontSize="x-large"
+                    message={{ id: m('register') }}
+                  />
+                </Link>
+              </VStack>
+            )}
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
+    );
+
+    return (
+      <>
+        {drawer}
+        <Button onClick={() => onOpen()}>
+          <GiHamburgerMenu fontSize="25px" />
+        </Button>
+      </>
+    );
+  }, [auth, isOpen, onOpen, onClose, isLookUpServices, isLandingPage]);
+
+  const responsiveAuthLinks = useMemo(() => {
+    return (
+      <>
+        <Show above="sm">{desktopAuthLinks}</Show>
+        <Show below="sm">{mobileAuthLinks}</Show>
+      </>
+    );
+  }, [auth, desktopAuthLinks, mobileAuthLinks]);
 
   return (
     <Flex
@@ -80,8 +245,9 @@ export const Navbar = () => {
           <Text
             type="heading"
             message={{ id: 'brand_name' }}
-            size="md"
+            size="lg"
             color="whitesmoke"
+            marginLeft={['10px', '0']}
           />
         </Link>
       </Flex>
@@ -91,10 +257,7 @@ export const Navbar = () => {
         align="center"
         justifyContent="flex-end"
       >
-        <Link href="/component-pallette">
-          <Text color="whitesmoke" fontSize="sm" message={{ text: 'Paleta' }} />
-        </Link>
-        {authLinks}
+        {responsiveAuthLinks}
       </HStack>
     </Flex>
   );

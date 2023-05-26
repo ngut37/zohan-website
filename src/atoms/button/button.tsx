@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { PropsWithChildren, useMemo } from 'react';
 
 import { useIntl } from 'react-intl';
 
@@ -9,19 +9,35 @@ import {
   ButtonProps as ChakraButtonProps,
 } from '@chakra-ui/react';
 
-export type ButtonProps = ChakraButtonProps & {
-  message: Message;
-};
+export type ButtonProps = PropsWithChildren<
+  ChakraButtonProps & {
+    message?: Message;
+    ref?: React.Ref<HTMLButtonElement>;
+  }
+>;
 
-export const Button = ({ message, ...buttonProps }: ButtonProps) => {
+export const Button = ({
+  message,
+  ref,
+  children,
+  ...buttonProps
+}: ButtonProps) => {
   const intl = useIntl();
-  const content = useMemo(
-    () => messageToString(message, intl),
-    [intl, message],
-  );
+  const content = useMemo(() => {
+    if (children) {
+      return children;
+    }
+
+    return message ? messageToString(message, intl) : null;
+  }, [intl, message, children]);
 
   return (
-    <ChakraButton colorScheme="teal" {...buttonProps}>
+    <ChakraButton
+      ref={ref}
+      colorScheme="teal"
+      minHeight="40px"
+      {...buttonProps}
+    >
       {content}
     </ChakraButton>
   );

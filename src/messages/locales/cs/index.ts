@@ -4,6 +4,7 @@ import { registerMessages } from './modules/register';
 import { loginMessages } from './modules/login';
 import { phoneNumberUpdateMessages } from './modules/phone-number-update';
 import { landingMessages } from './modules/landing';
+import { servicesMessages } from './modules/services';
 
 export const cs = {
   ...globalMessages,
@@ -12,4 +13,5 @@ export const cs = {
   ...registerMessages,
   ...loginMessages,
   ...phoneNumberUpdateMessages,
+  ...servicesMessages,
 };
