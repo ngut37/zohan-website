@@ -1,12 +1,17 @@
 import React, { useMemo } from 'react';
 
-import { FieldValues, UseFormSetValue } from 'react-hook-form';
+import { UseFormSetValue } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import { HiOutlineX } from 'react-icons/hi';
 
 import { ListVenuesQueryParameters } from '@api/venues';
 import { PopulatedRegion } from '@api/address/types';
-import { serviceVariants, SERVICE_TYPES } from '@api/services';
+import {
+  ServiceName,
+  ServiceType,
+  serviceVariants,
+  SERVICE_TYPES,
+} from '@api/services';
 
 import { messageToString } from '@utils/message';
 import { messageIdConcat } from '@utils/message-id-concat';
@@ -29,7 +34,7 @@ import {
 type Props = {
   populatedRegions: PopulatedRegion[];
   formValues: ListVenuesQueryParameters;
-  setFormValue: UseFormSetValue<FieldValues>;
+  setFormValue: UseFormSetValue<ListVenuesQueryParameters>;
   formSubmit: () => void;
   formReset: () => void;
   checkboxHeight?: CheckboxProps['height'];
@@ -89,7 +94,9 @@ export const VenuesFilter = ({
           value={formValues.mops?.map((mop) => mop.toString())}
           onChange={(selectedMopIds) => {
             const setOfSelectedMopIds = new Set(selectedMopIds);
-            setFormValue('mops', [...setOfSelectedMopIds]);
+            setFormValue('mops', [
+              ...(setOfSelectedMopIds as unknown as string[]),
+            ]);
           }}
         >
           <Grid templateColumns="repeat(2, 1fr)" width="100%">
@@ -121,7 +128,9 @@ export const VenuesFilter = ({
         defaultValue={formValues.districts}
         onChange={(selectedDistrictIds) => {
           const setOfSelectedDistrictIds = new Set(selectedDistrictIds);
-          setFormValue('districts', [...setOfSelectedDistrictIds]);
+          setFormValue('districts', [
+            ...(setOfSelectedDistrictIds as unknown as string[]),
+          ]);
         }}
       >
         <Grid templateColumns="repeat(2, 1fr)" width="100%">
@@ -156,7 +165,7 @@ export const VenuesFilter = ({
             // unset district and mop when changing region
             setFormValue('serviceNames', undefined);
 
-            setFormValue('serviceType', e.target.value);
+            setFormValue('serviceType', e.target.value as ServiceType);
           }}
           value={formValues.serviceType ?? undefined}
           placeholder={messageToString(
@@ -183,7 +192,9 @@ export const VenuesFilter = ({
           defaultValue={formValues.serviceNames}
           onChange={(selectedServiceNames) => {
             const setOfSelectedDistrictIds = new Set(selectedServiceNames);
-            setFormValue('serviceNames', [...setOfSelectedDistrictIds]);
+            setFormValue('serviceNames', [
+              ...(setOfSelectedDistrictIds as unknown as ServiceName[]),
+            ]);
           }}
         >
           <VStack width="100%">

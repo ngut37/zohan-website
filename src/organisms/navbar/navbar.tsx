@@ -95,12 +95,11 @@ export const Navbar = () => {
             spacing="50px"
             height="40px"
             paddingX="40px"
-            width="500px"
             justifyContent="center"
           >
-            <Link href="/services">
+            <Link href="/venues">
               <Text
-                width="105px"
+                width="99px"
                 color="whitesmoke"
                 fontSize="lg"
                 message={{ id: m('link.look_up_services') }}
@@ -112,9 +111,9 @@ export const Navbar = () => {
               />
             </Link>
           </HStack>
-          <HStack>
+          <HStack spacing="20px">
             {userAvatar}
-            <Text color="white" message={{ text: name }} paddingRight="20px" />
+            <Text color="white" message={{ text: name }} whiteSpace="nowrap" />
             <Button
               variant="solid"
               colorScheme="whiteAlpha"
@@ -226,8 +225,8 @@ export const Navbar = () => {
   const responsiveAuthLinks = useMemo(() => {
     return (
       <>
-        <Show above="sm">{desktopAuthLinks}</Show>
-        <Show below="sm">{mobileAuthLinks}</Show>
+        <Show above="lg">{desktopAuthLinks}</Show>
+        <Show below="lg">{mobileAuthLinks}</Show>
       </>
     );
   }, [auth, desktopAuthLinks, mobileAuthLinks]);
