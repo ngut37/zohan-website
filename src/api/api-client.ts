@@ -2,7 +2,14 @@ import axios, { AxiosRequestConfig } from 'axios';
 
 import { config } from '@config/config';
 
-import { getAccessToken } from '@utils/storage/auth';
+import {
+  getAccessToken,
+  parseAccessToken,
+  removeAccessToken,
+  saveAccessTokenToken,
+} from '@utils/storage/auth';
+
+import { ResponseResult } from './types';
 
 export const apiClient = axios.create({
   baseURL: config.API_URL?.toString(),
@@ -25,10 +32,43 @@ protectedApiClient.request = async (
 ): Promise<any | undefined> => {
   try {
     // auth token inject
-    const token = getAccessToken();
-    if (token) {
+    const accessToken = getAccessToken();
+    if (accessToken) {
       if (!requestConfig.headers) requestConfig.headers = {};
-      requestConfig.headers.authorization = `Bearer ${token}`;
+      requestConfig.headers.authorization = `Bearer ${accessToken}`;
+    }
+
+    if (!parseAccessToken(accessToken, {})) {
+      try {
+        const {
+          data: {
+            data: { accessToken: refreshedAccessToken },
+          },
+        } = await originalRequest<
+          ResponseResult<{
+            accessToken: string;
+          }>
+        >({
+          url: '/auth/refresh-token',
+          method: 'GET',
+          withCredentials: true,
+          headers: {
+            authorization: `Bearer ${accessToken}`,
+          },
+        });
+
+        if (refreshedAccessToken) {
+          // B_2 persist new access token in localstorage
+          saveAccessTokenToken(refreshedAccessToken);
+        }
+      } catch {
+        removeAccessToken();
+        await originalRequest({
+          url: '/auth/logout',
+          method: 'POST',
+          withCredentials: true,
+        });
+      }
     }
 
     const result = await originalRequest(requestConfig);

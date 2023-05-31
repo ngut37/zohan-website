@@ -9,6 +9,21 @@ export const globalMessages: MessageObject = {
   'gender.female': 'Žena',
   'gender.other': 'Jiné',
 
+  // UNITS
+  'unit.minutes':
+    '{minutes} {minutes, plural, one {minuta} few {minuty} other {minut}}',
+  'unit.czech_crowns': '{crowns} Kč',
+
+  // COMMON WORDS
+  'countable.next': `{count} {count, plural, 
+        one {další}
+        few {další}
+        other {dalších}
+      }`,
+  'word.services': 'Služby',
+  'word.price': 'Cena',
+  'word.duration': 'Délka',
+
   google: 'Google',
   facebook: 'Facebook',
 
@@ -16,6 +31,13 @@ export const globalMessages: MessageObject = {
   'error.api': 'Došlo k chybě, zkuste to prosím později',
 
   // BUTTONS
+  'button.close': 'zavřít',
   'button.filter': 'filtrovat',
+  'button.book': 'rezervovat',
+  'button.show': 'zobrazit',
+  'button.hide': 'skrýt',
   'button.reset_filter': 'smazat filtry',
+  'button.create_booking': 'vytvořit rezervaci',
+  'button.confirm_booking': 'potvrdit rezervaci',
+  'button.understood': 'rozumím',
 };

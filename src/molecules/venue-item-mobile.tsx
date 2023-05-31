@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 
+import { useRouter } from 'next/router';
 import { HiOutlineOfficeBuilding, HiOutlineTag } from 'react-icons/hi';
 import { SlLocationPin } from 'react-icons/sl';
 import { HiBuildingStorefront } from 'react-icons/hi2';
@@ -25,6 +26,7 @@ export const VenueItemMobile = ({
   services,
 }: Props) => {
   const intl = useIntl();
+  const router = useRouter();
 
   const concatAddress = useMemo(() => {
     return `${stringAddress}, ${district}`;
@@ -40,8 +42,7 @@ export const VenueItemMobile = ({
       boxShadow="sm"
       overflow="hidden"
       onClick={() => {
-        // TODO: navigate to venue detail page
-        console.log('venue clicked with id: ', _id);
+        router.push(`/venues/${_id}`);
       }}
     >
       <Flex

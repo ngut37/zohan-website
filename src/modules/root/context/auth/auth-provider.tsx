@@ -39,7 +39,18 @@ export const AuthProvider = ({ protectedPage = false, children }: Props) => {
     if (!protectedPage) {
       // A not a protected page -> no need to authenticate
       const accessToken = getAccessToken();
-      const data = parseAccessToken(accessToken, {});
+      let data = parseAccessToken(accessToken, {});
+
+      if (!data) {
+        const { accessToken: refreshedAccessToken } =
+          (await refreshToken()) || {};
+
+        if (refreshedAccessToken) {
+          // B_2 persist new access token in localstorage
+          saveAccessTokenToken(refreshedAccessToken);
+          data = parseAccessToken(refreshedAccessToken, {});
+        }
+      }
 
       // C access token is valid -> set auth state
       if (data) {
@@ -70,7 +81,6 @@ export const AuthProvider = ({ protectedPage = false, children }: Props) => {
         // B_2 persist new access token in localstorage
         saveAccessTokenToken(refreshedAccessToken);
         data = parseAccessToken(refreshedAccessToken, {});
-        router.reload();
       }
     }
 

@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react';
 
+import { useRouter } from 'next/router';
 import {
   HiOutlineArrowNarrowRight,
   HiOutlineOfficeBuilding,
@@ -29,6 +30,7 @@ export const VenueItemDesktop = ({
   services,
 }: Props) => {
   const intl = useIntl();
+  const router = useRouter();
 
   const [hover, setHover] = useState(false);
 
@@ -59,8 +61,7 @@ export const VenueItemDesktop = ({
         setHover(false);
       }}
       onClick={() => {
-        // TODO: navigate to venue detail page
-        console.log('venue clicked with id: ', _id);
+        router.push(`/venues/${_id}`);
       }}
     >
       <Flex

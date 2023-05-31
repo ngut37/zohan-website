@@ -164,3 +164,15 @@ export type Service = {
   createdAt: string;
   updatedAt: string;
 };
+
+export const exampleService: Service = {
+  _id: '646d0b6e1b0b0b7371b0b0b0',
+  type: 'barbershop',
+  name: 'barbershop_clipper_cut',
+  venue: '646aac56e92b3913da2d9224',
+  staff: ['646aac56e92b3913da2d9224'],
+  length: 30,
+  price: 300,
+  createdAt: '2023-05-21T08:00:00.000Z',
+  updatedAt: '2023-05-21T08:30:00.000Z',
+};

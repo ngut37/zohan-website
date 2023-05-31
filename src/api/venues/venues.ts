@@ -1,7 +1,13 @@
-import { ServiceName, ServiceType } from '@api/services';
-import { PaginationType, ResponseResult } from '@api/types';
+import { Coordinates } from '@api/address/types';
+import { Service, ServiceName, ServiceType } from '@api/services';
+import { Staff } from '@api/staff';
+import {
+  PaginationType,
+  ResponseResult,
+  WeeklyBusinessHours,
+} from '@api/types';
 
-import { protectedApiClient } from '../api-client';
+import { apiClient, protectedApiClient } from '../api-client';
 
 export type ListVenuesQueryParameters = {
   region?: string;
@@ -22,6 +28,16 @@ export type VenuesListItem = {
   district: string;
   mop: string;
   services: ServiceType[];
+};
+
+export const exampleVenuesListItem: VenuesListItem = {
+  _id: '646d0b6e1b0b0b7371b0b0b0',
+  stringAddress: 'U Měšťanského pivovaru 869/1',
+  company: '637159736dbf8d8cbd846267',
+  region: 'Hlavní město Praha',
+  district: 'Hlavní město Praha',
+  mop: 'Praha 7',
+  services: ['barbershop', 'hair_salon'],
 };
 
 export const listVenuesOrFail = async (
@@ -54,4 +70,21 @@ export const listVenuesOrFail = async (
   });
 
   return response.data.data;
+};
+
+export type GetVenueByIdData = {
+  venue: Omit<VenuesListItem, 'services'> & {
+    businessHours: WeeklyBusinessHours;
+    coordinates: Coordinates;
+    companyName: string; // company name instead of id
+  };
+  services: Service[];
+  staff: Staff[];
+};
+
+export const getVenueByIdOrFail = async (id: string) => {
+  const { data } = await apiClient.get<ResponseResult<GetVenueByIdData>>(
+    `/venues/${id}`,
+  );
+  return data;
 };

@@ -1,13 +1,14 @@
+/* eslint-disable filenames/match-regex */
 import React from 'react';
 
-import { VenueList } from '@organisms/venues/venue-list';
+import { VenueDetail } from '@organisms/venue-detail';
 
 import { Root } from '@modules/root';
 
 export default function Venues() {
   return (
     <Root>
-      <VenueList />
+      <VenueDetail />
     </Root>
   );
 }
