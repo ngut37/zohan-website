@@ -103,7 +103,7 @@ export const ServicesListDesktop = ({
           setFormValue={setFormValue}
           formSubmit={formSubmit}
           formReset={formReset}
-          checkboxHeight="25px"
+          checkboxHeight="40px"
         />
       </Flex>
       <VStack width="full" height="full" spacing="20px">

@@ -31,6 +31,7 @@ export const globalMessages: MessageObject = {
   'error.api': 'Došlo k chybě, zkuste to prosím později',
 
   // BUTTONS
+  'button.back': 'zpět',
   'button.close': 'zavřít',
   'button.filter': 'filtrovat',
   'button.book': 'rezervovat',

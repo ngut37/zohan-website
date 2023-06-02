@@ -1,13 +1,12 @@
 import React from 'react';
 
-import { VenueList } from '@organisms/venues';
-
 import { Root } from '@modules/root';
+import { VenueListPage } from '@modules/pages/venues-list';
 
 export default function Venues() {
   return (
     <Root>
-      <VenueList />
+      <VenueListPage />
     </Root>
   );
 }
