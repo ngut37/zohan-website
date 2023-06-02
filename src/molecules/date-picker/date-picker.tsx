@@ -74,6 +74,11 @@ export const DatePicker = ({
       disabled={disabled}
       // filters
       filterDate={filterDate}
+      // WORKAROUND disable keyboard popup on mobile devices
+      onFocus={(e) => {
+        e.stopPropagation();
+        e.target.blur();
+      }}
     />
   );
 };

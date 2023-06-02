@@ -19,6 +19,7 @@ import { Button, MapsIframe, Text } from '@atoms';
 
 import { BookingCreateForm } from '@molecules/venue-detail';
 import { ServiceCard } from '@molecules/service-card';
+import { BackButton } from '@molecules/back-button';
 
 import { useAuth } from '@modules/root/context/auth';
 
@@ -26,12 +27,11 @@ import {
   Box,
   Collapse,
   Divider,
-  Drawer,
-  DrawerBody,
-  DrawerCloseButton,
-  DrawerContent,
-  DrawerHeader,
-  DrawerOverlay,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalHeader,
   HStack,
   useDisclosure,
   VStack,
@@ -65,21 +65,21 @@ export const VenueDetailMobile = ({
   const { isOpen: isServicesOpen, onToggle: onServicesToggle } =
     useDisclosure();
 
-  const bookingEditDrawer = useMemo(() => {
+  const bookingEditModal = useMemo(() => {
     return (
-      <Drawer
+      <Modal
         isOpen={isOpen}
-        placement="bottom"
         onClose={() => {
           onClose();
           formReset();
         }}
         size="full"
+        motionPreset="slideInBottom"
+        scrollBehavior="inside"
       >
-        <DrawerOverlay />
-        <DrawerContent>
-          <DrawerCloseButton />
-          <DrawerHeader>
+        <ModalContent>
+          <ModalCloseButton />
+          <ModalHeader>
             <Text
               message={{
                 id: m('create_booking.drawer.title'),
@@ -87,8 +87,8 @@ export const VenueDetailMobile = ({
               }}
               marginRight="20px"
             />
-          </DrawerHeader>
-          <DrawerBody
+          </ModalHeader>
+          <ModalBody
             display="flex"
             marginBottom="20px"
             flexDirection="column"
@@ -110,9 +110,9 @@ export const VenueDetailMobile = ({
                 }
               }}
             />
-          </DrawerBody>
-        </DrawerContent>
-      </Drawer>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
     );
   }, [venue, formValues, services, staff, isOpen, onClose, setFormValue]);
 
@@ -134,8 +134,9 @@ export const VenueDetailMobile = ({
   }, [services]);
 
   return (
-    <VStack width="100%" padding="30px" alignItems="flex-start" spacing="50px">
-      {bookingEditDrawer}
+    <VStack width="100%" paddingX="30px" alignItems="flex-start" spacing="50px">
+      {bookingEditModal}
+      <BackButton alignSelf="flex-start" marginBottom="-30px" />
       <VStack width="100%" alignItems="flex-start">
         <Text
           message={{ text: venue.companyName }}

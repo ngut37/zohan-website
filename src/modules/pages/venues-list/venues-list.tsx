@@ -23,7 +23,7 @@ import { ServicesListDesktop, ServicesListMobile } from '@organisms/venues';
 
 import { Flex, Show, useToast } from '@chakra-ui/react';
 
-export const VenueList = () => {
+export const VenueListPage = () => {
   const router = useRouter();
   const intl = useIntl();
   const toast = useToast();

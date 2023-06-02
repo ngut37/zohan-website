@@ -19,6 +19,8 @@ import { messageToString } from '@utils/message';
 import { getHourMinuteFromDate } from '@utils/get-hour-minute-from-date';
 import { getDayName } from '@utils/date/get-day-name';
 
+import { useScrollToComponent } from '@hooks/use-scroll-to-component';
+
 import { Button, Text } from '@atoms';
 
 import { InputLabel } from '@molecules/input-label';
@@ -63,6 +65,7 @@ export const BookingCreateForm = ({
 }: Props) => {
   const intl = useIntl();
   const toast = useToast();
+  const { InvisibleComponent, scrollToComponent } = useScrollToComponent();
 
   const selectedService = useMemo(() => {
     const foundService = services.find(
@@ -336,6 +339,7 @@ export const BookingCreateForm = ({
           margin="10px !important"
           onClick={() => {
             setFormValue('start', slot.toISOString());
+            scrollToComponent();
           }}
           backgroundColor={selected ? 'teal' : 'white'}
           border="1px solid"
@@ -469,6 +473,7 @@ export const BookingCreateForm = ({
       <VStack width="100%" spacing="20px">
         <Divider />
         {submitButton}
+        <InvisibleComponent />
       </VStack>
     </VStack>
   );

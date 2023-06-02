@@ -20,6 +20,7 @@ import { Text, MapsIframe } from '@atoms';
 
 import { BookingCreateForm } from '@molecules/venue-detail';
 import { ServiceCard } from '@molecules/service-card';
+import { BackButton } from '@molecules/back-button';
 
 import { useAuth } from '@modules/root/context/auth';
 
@@ -87,6 +88,7 @@ export const VenueDetailDesktop = ({
     >
       <InvisibleComponent />
       <VStack width="60%" spacing="40px">
+        <BackButton alignSelf="flex-start" marginBottom="-20px" />
         <VStack width="100%" alignItems="flex-start" paddingRight="20px">
           <Text
             message={{ text: venue.companyName }}

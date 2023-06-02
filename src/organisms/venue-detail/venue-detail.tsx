@@ -17,12 +17,12 @@ import { useScrollToComponent } from '@hooks/use-scroll-to-component';
 import { BookingConfirmationModal } from '@molecules/venue-detail/booking-confirmation-modal';
 
 import {
-  Box,
   Flex,
   Show,
   Spinner,
   useDisclosure,
   useToast,
+  VStack,
 } from '@chakra-ui/react';
 
 import { colors } from '@styles';
@@ -184,7 +184,7 @@ export const VenueDetail = () => {
   }
 
   return (
-    <Box width="100%">
+    <VStack width="100%" paddingY="20px">
       <InvisibleComponent />
       <Show below="lg">
         <BookingConfirmationModal
@@ -228,6 +228,6 @@ export const VenueDetail = () => {
           />
         </Flex>
       </Show>
-    </Box>
+    </VStack>
   );
 };
