@@ -2,9 +2,9 @@ import React, { useMemo, useState } from 'react';
 
 import { useRouter } from 'next/router';
 import { useIntl } from 'react-intl';
-import { FcGoogle } from 'react-icons/fc';
+// import { FcGoogle } from 'react-icons/fc';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { signIn } from 'next-auth/client';
+// import { signIn } from 'next-auth/client';
 
 import { config } from '@config/config';
 
@@ -28,6 +28,8 @@ import {
   Divider,
   Flex,
   VStack,
+  Image,
+  HStack,
 } from '@chakra-ui/react';
 
 import { colors } from '@styles';
@@ -250,7 +252,7 @@ export const RegisterForm = () => {
             size="lg"
             type="submit"
             width="100%"
-            message={{ id: m('button.submit') }}
+            message={{ id: 'button.register' }}
             isLoading={submitting}
           />
         </VStack>
@@ -265,24 +267,24 @@ export const RegisterForm = () => {
     submitting,
   ]);
 
-  const oAuthSection = useMemo(() => {
-    return (
-      <Flex alignItems="center" justifyContent="space-between" width="100%">
-        <Button
-          width="100%"
-          variant="outline"
-          color="gray.500"
-          leftIcon={<FcGoogle color="white" />}
-          message={{ id: 'google' }}
-          onClick={() =>
-            signIn('google', {
-              callbackUrl: `${config.APP_URL}/new-oauth-user-landing`,
-            })
-          }
-        />
-      </Flex>
-    );
-  }, []);
+  // const oAuthSection = useMemo(() => {
+  //   return (
+  //     <Flex alignItems="center" justifyContent="space-between" width="100%">
+  //       <Button
+  //         width="100%"
+  //         variant="outline"
+  //         color="gray.500"
+  //         leftIcon={<FcGoogle color="white" />}
+  //         message={{ id: 'google' }}
+  //         onClick={() =>
+  //           signIn('google', {
+  //             callbackUrl: `${config.APP_URL}/new-oauth-user-landing`,
+  //           })
+  //         }
+  //       />
+  //     </Flex>
+  //   );
+  // }, []);
 
   const loginError = useMemo(() => {
     if (showAuthError?.errorMessage)
@@ -304,26 +306,14 @@ export const RegisterForm = () => {
 
   return (
     <Flex
+      my="40px"
+      px="30px"
       width="100%"
       minH="80vh"
-      p="70px"
-      justify="space-evenly"
+      justify="center"
       align="center"
     >
-      <Flex
-        width="100%"
-        maxW="1200px"
-        direction={['column', 'row-reverse']}
-        justify={['center', 'space-evenly']}
-        align={['center', 'flex-start']}
-      >
-        <Flex
-          display={['none', 'none', 'none', 'flex']}
-          width="600px"
-          marginTop="20px"
-        >
-          <img src="/static/img/registration.jpg" />
-        </Flex>
+      <HStack w="100%" maxW="1200px" justifyContent="space-evenly">
         <Flex
           py="40px"
           px={['20px', '40px']}
@@ -351,19 +341,22 @@ export const RegisterForm = () => {
             width="100%"
           >
             {form}
-            {oAuthSection}
+            {/* {oAuthSection} */}
             {loginError}
           </VStack>
           <Divider orientation="horizontal" my="10px" />
           <Link href="/login">
-            <Button
-              variant="link"
-              type="submit"
-              message={{ id: m('link.login') }}
-            />
+            <Button variant="ghost" message={{ id: m('link.login') }} />
           </Link>
         </Flex>
-      </Flex>
+        <Flex
+          display={['none', 'none', 'none', 'flex']}
+          width="600px"
+          marginTop="20px"
+        >
+          <Image src="/static/img/registration.jpg" opacity="0.5" />
+        </Flex>
+      </HStack>
     </Flex>
   );
 };

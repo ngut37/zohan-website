@@ -38,8 +38,12 @@ export const globalMessages: MessageObject = {
   'button.show': 'zobrazit',
   'button.save': 'uložit',
   'button.hide': 'skrýt',
+  'button.login': 'přihlásit se',
+  'button.register': 'registrovat se',
+  'button.try': 'vyzkoušet',
   'button.reset_filter': 'smazat filtry',
   'button.create_booking': 'vytvořit rezervaci',
   'button.confirm_booking': 'potvrdit rezervaci',
   'button.understood': 'rozumím',
+  'button.look_up_services': 'vyhledat služby',
 };
