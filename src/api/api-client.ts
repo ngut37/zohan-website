@@ -58,8 +58,9 @@ protectedApiClient.request = async (
         });
 
         if (refreshedAccessToken) {
-          // B_2 persist new access token in localstorage
           saveAccessTokenToken(refreshedAccessToken);
+          if (!requestConfig.headers) requestConfig.headers = {};
+          requestConfig.headers.authorization = `Bearer ${refreshedAccessToken}`;
         }
       } catch {
         removeAccessToken();
@@ -76,6 +77,6 @@ protectedApiClient.request = async (
     return result;
   } catch (err: any) {
     console.error(err);
-    return;
+    throw err;
   }
 };

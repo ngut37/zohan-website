@@ -9,6 +9,10 @@ const defaultConfig: Config = {
   GOOGLE_SECRET: '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',
   FACEBOOK_CLIENT_ID: '639559107099698',
   FACEBOOK_CLIENT_SECRET: '431cf026df2dd012b54d85ae26831fd0',
+  MIN_PASSWORD_LENGTH: 6,
+  MAX_PASSWORD_LENGTH: 256,
+  MIN_NAME_LENGTH: 2,
+  MAX_NAME_LENGTH: 64,
 };
 
 export const config = createConfig(

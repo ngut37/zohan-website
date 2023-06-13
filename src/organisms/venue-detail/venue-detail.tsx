@@ -90,13 +90,7 @@ export const VenueDetail = () => {
     });
   }, [intl]);
 
-  const {
-    handleSubmit,
-    formState: { errors },
-    setValue,
-    reset,
-    watch,
-  } = useForm<BookingPayload>({
+  const { handleSubmit, setValue, reset, watch } = useForm<BookingPayload>({
     resolver: yupResolver(schema),
   });
 
@@ -154,10 +148,6 @@ export const VenueDetail = () => {
       });
     }
   });
-
-  useEffect(() => {
-    console.log({ errors });
-  }, [errors]);
 
   const onModalClose = useCallback(() => {
     onClose();

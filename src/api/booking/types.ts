@@ -54,3 +54,18 @@ export const exampleBooking: Booking = {
   __v: 0,
   existingCustomer: '646aac56e92b3913da2d9224',
 };
+
+export type SimplifiedBooking = {
+  _id: string;
+  venue: VenuesListItem;
+  staff: {
+    staffName: string;
+  };
+  service: {
+    name: string;
+    type: string;
+    price: number;
+  };
+  start: string;
+  end: string;
+};

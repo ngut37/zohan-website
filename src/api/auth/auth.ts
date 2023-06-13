@@ -1,8 +1,10 @@
 import { ResponseResult } from '@api/types';
 
+import { saveAccessTokenToken } from '@utils/storage/auth';
+
 import { apiClient, protectedApiClient } from '../api-client';
 
-import { OAuthType, User } from './types';
+import { OAuthType } from './types';
 
 type LoginBody = {
   email: string;
@@ -81,19 +83,27 @@ export const refreshToken = async () => {
   }
 };
 
-export async function register(body: RegisterBody): Promise<ResponseResult>;
+export async function register(
+  body: RegisterBody,
+): Promise<ResponseResult<{ accessToken: string }>>;
 export async function register(
   body: OAuthRegisterBody,
-): Promise<ResponseResult>;
+): Promise<ResponseResult<{ accessToken: string }>>;
 export async function register(
   body: RegisterBody | OAuthRegisterBody,
-): Promise<ResponseResult> {
-  const response = await apiClient.request<ResponseResult>({
+): Promise<ResponseResult<{ accessToken: string }>> {
+  const response = await apiClient.request<
+    ResponseResult<{ accessToken: string }>
+  >({
     url: '/auth/register',
     method: 'POST',
     data: body,
     withCredentials: true,
   });
+
+  // save accessToken
+  saveAccessTokenToken(response.data.data.accessToken);
+
   return response.data;
 }
 
@@ -105,23 +115,45 @@ export const emailExists = async (email: string) => {
   if (response?.data) return response.data.data;
 };
 
-type UpdateUserBody = {
-  email?: string;
-  name?: string;
-  password?: string;
+export type UpdateUserPayload = {
+  email: string;
+  name: string;
   phoneNumber?: string;
 };
 
-export const updateUser = async (body: UpdateUserBody) => {
+export const updateUserOrFail = async (body: UpdateUserPayload) => {
   try {
-    const response = await apiClient.request<ResponseResult<User>>({
+    const response = await protectedApiClient.request<
+      ResponseResult<{ accessToken: string }>
+    >({
       url: `/auth/update`,
       method: 'POST',
       data: body,
       withCredentials: true,
     });
-    if (response?.data) return response.data.data;
-  } catch {
-    return undefined;
+
+    // set new accessToken
+    saveAccessTokenToken(response.data.data.accessToken);
+
+    return response.data;
+  } catch (err) {
+    console.error(err);
+    throw err;
   }
+};
+
+export type ChangePasswordPayload = {
+  oldPassword: string;
+  newPassword: string;
+};
+
+export const changePasswordOrFail = async (body: ChangePasswordPayload) => {
+  const response = await protectedApiClient.request<ResponseResult>({
+    url: `/auth/change-password`,
+    method: 'POST',
+    data: body,
+    withCredentials: true,
+  });
+
+  return response.data;
 };

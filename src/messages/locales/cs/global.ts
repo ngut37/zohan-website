@@ -36,6 +36,7 @@ export const globalMessages: MessageObject = {
   'button.filter': 'filtrovat',
   'button.book': 'rezervovat',
   'button.show': 'zobrazit',
+  'button.save': 'uložit',
   'button.hide': 'skrýt',
   'button.reset_filter': 'smazat filtry',
   'button.create_booking': 'vytvořit rezervaci',

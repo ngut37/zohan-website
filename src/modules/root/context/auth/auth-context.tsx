@@ -8,6 +8,7 @@ export type AuthContextType = {
   logout: () => Promise<void>;
   loading: boolean;
   setLoading: Dispatch<SetStateAction<boolean>>;
+  setAuthFromAccessToken: () => void;
 };
 
 export const useAuth = () => useContext(AuthContext);
@@ -19,4 +20,5 @@ export const AuthContext = createContext<AuthContextType>({
   logout: async () => {},
   loading: true,
   setLoading: () => {},
+  setAuthFromAccessToken: () => {},
 });

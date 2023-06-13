@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 
-import {
-  HiOutlineClock,
-  HiOutlineCurrencyDollar,
-  HiOutlineTag,
-} from 'react-icons/hi';
+import { HiOutlineClock, HiOutlineTag } from 'react-icons/hi';
+import { BiDollar } from 'react-icons/bi';
 import { useIntl } from 'react-intl';
 
 import { Service } from '@api/services';
@@ -99,7 +96,7 @@ export const ServiceCard = ({ service, disabled = false, onClick }: Props) => {
           />
         </HStack>
         <HStack>
-          <HiOutlineCurrencyDollar />
+          <BiDollar />
           <Text
             message={{
               id: 'unit.czech_crowns',

@@ -42,11 +42,6 @@ type Inputs = {
   phoneNumber: string;
 };
 
-const minNameLength = 2;
-const maxNameLength = 64;
-const minPasswordLength = 6;
-const maxPasswordLength = 256;
-
 const m = messageIdConcat('register');
 
 export const RegisterForm = () => {
@@ -58,21 +53,21 @@ export const RegisterForm = () => {
       .string()
       .strict()
       .min(
-        minNameLength,
+        config.MIN_NAME_LENGTH || 2,
         messageToString(
           {
             id: m('input.name.error.min'),
-            values: { length: minNameLength },
+            values: { length: config.MIN_NAME_LENGTH || 2 },
           },
           intl,
         ),
       )
       .max(
-        maxNameLength,
+        config.MAX_NAME_LENGTH || 64,
         messageToString(
           {
             id: m('input.name.error.max'),
-            values: { length: maxNameLength },
+            values: { length: config.MAX_NAME_LENGTH || 64 },
           },
           intl,
         ),
@@ -85,11 +80,11 @@ export const RegisterForm = () => {
     password: yup
       .string()
       .min(
-        minPasswordLength,
+        config.MIN_PASSWORD_LENGTH || 6,
         messageToString({ id: m('input.password.error.min') }, intl),
       )
       .max(
-        maxPasswordLength,
+        config.MAX_PASSWORD_LENGTH || 256,
         messageToString({ id: m('input.password.error.max') }, intl),
       )
       .required(

@@ -7,13 +7,15 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import { useIntl } from 'react-intl';
 
-import { updateUser } from '@api/auth/auth';
+import { updateUserOrFail } from '@api/auth';
 
 import { messageToString } from '@utils/message';
 import { messageIdConcat } from '@utils/message-id-concat';
 import { yup } from '@utils/yup';
 
 import { Button, Input, Text } from '@atoms';
+
+import { useAuth } from '@modules/root/context/auth';
 
 import {
   Alert,
@@ -37,6 +39,7 @@ const m = messageIdConcat('phone_number');
 export const PhoneNumberForm = () => {
   const intl = useIntl();
   const router = useRouter();
+  const { auth } = useAuth();
 
   const schema = yup.object().shape({
     phoneNumber: yup.string().phoneNumber(
@@ -65,8 +68,17 @@ export const PhoneNumberForm = () => {
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     setSubmitting(true);
+
+    if (!auth) {
+      return;
+    }
+
     try {
-      const user = await updateUser(data);
+      const user = await updateUserOrFail({
+        name: auth.name,
+        email: auth.email,
+        phoneNumber: data.phoneNumber,
+      });
       if (user) {
         router.push('/component-pallette');
       }

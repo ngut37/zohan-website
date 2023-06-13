@@ -10,6 +10,7 @@ import { messageIdConcat } from '@utils/message-id-concat';
 import { Text, Link, Button } from '@atoms';
 
 import { AuthContext } from '@modules/root/context/auth';
+import { SETTINGS_TABS } from '@modules/pages/user-settings/types';
 
 import {
   Divider,
@@ -87,7 +88,7 @@ export const Navbar = () => {
       // );
 
       const userAvatar = (
-        <HiOutlineUserCircle width="20px" color={colors.whitesmoke.hex()} />
+        <HiOutlineUserCircle fontSize="20px" color={colors.whitesmoke.hex()} />
       );
       return (
         <>
@@ -112,8 +113,18 @@ export const Navbar = () => {
             </Link>
           </HStack>
           <HStack spacing="20px">
-            {userAvatar}
-            <Text color="white" message={{ text: name }} whiteSpace="nowrap" />
+            <Link href={`/settings?tab=${SETTINGS_TABS['basic-info']}`}>
+              <HStack _hover={{ textDecoration: 'underline', color: 'white' }}>
+                {userAvatar}
+                <Text
+                  color="white"
+                  message={{ text: name }}
+                  whiteSpace="nowrap"
+                  fontSize="lg"
+                  fontWeight="semibold"
+                />
+              </HStack>
+            </Link>
             <Button
               variant="solid"
               colorScheme="whiteAlpha"
@@ -172,23 +183,28 @@ export const Navbar = () => {
             </VStack>
 
             {auth ? (
-              <VStack width="100%" alignItems="flex-end" spacing="30px">
-                <HStack>
-                  {userAvatar}
-                  <Text
-                    fontSize="xl"
-                    color="teal"
-                    message={{ text: auth.name }}
-                    fontWeight="semibold"
+              <Link
+                href={`/settings?tab=${SETTINGS_TABS['basic-info']}`}
+                onClick={onClose}
+              >
+                <VStack width="100%" alignItems="flex-end" spacing="30px">
+                  <HStack>
+                    {userAvatar}
+                    <Text
+                      fontSize="xl"
+                      fontWeight="semibold"
+                      color="teal"
+                      message={{ text: auth.name }}
+                    />
+                  </HStack>
+                  <Button
+                    size="lg"
+                    variant="solid"
+                    onClick={logout}
+                    message={{ id: 'navbar.logout' }}
                   />
-                </HStack>
-                <Button
-                  size="lg"
-                  variant="solid"
-                  onClick={logout}
-                  message={{ id: 'navbar.logout' }}
-                />
-              </VStack>
+                </VStack>
+              </Link>
             ) : (
               <VStack width="100%" alignItems="flex-end" spacing="30px">
                 <Link href="/login">

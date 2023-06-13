@@ -10,6 +10,7 @@ export type User = {
   name: string;
   email: string;
   avatarUrl?: string;
+  phoneNumber?: string;
   oAuth?: {
     userId: string;
     type: OAuthType;

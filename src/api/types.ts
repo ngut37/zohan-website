@@ -5,6 +5,16 @@ export type ResponseResult<T = never> = {
   data: T;
 };
 
+export type PaginationType = {
+  page: number;
+  limit: number;
+  total: number;
+};
+
+export type ResponseResultWithPagination<T = never> = ResponseResult<T> & {
+  pagination: PaginationType;
+};
+
 export type Time = {
   hour: number;
   minute: number;
@@ -24,9 +34,3 @@ export type WeeklyBusinessHours = Partial<
 export const DAYS = enumerate('mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun');
 
 export type Day = keyof typeof DAYS;
-
-export type PaginationType = {
-  page: number;
-  limit: number;
-  total: number;
-};
