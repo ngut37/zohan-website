@@ -25,9 +25,16 @@ import { colors } from '@styles';
 
 import { AuthContext } from './auth-context';
 
-type Props = PropsWithChildren<{ protectedPage?: boolean }>;
+type Props = PropsWithChildren<{
+  protectedPage?: boolean;
+  passthrough?: boolean;
+}>;
 
-export const AuthProvider = ({ protectedPage = false, children }: Props) => {
+export const AuthProvider = ({
+  protectedPage = false,
+  passthrough = false,
+  children,
+}: Props) => {
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(true);
   const [auth, setAuthState] = useState<User | undefined>();
@@ -75,6 +82,11 @@ export const AuthProvider = ({ protectedPage = false, children }: Props) => {
 
     // B access token not present or invalid -> get new access token using refresh token
     if (!data) {
+      if (passthrough) {
+        setLoading(false);
+        return;
+      }
+
       const { accessToken: refreshedAccessToken } =
         (await refreshToken()) || {};
 
@@ -99,7 +111,7 @@ export const AuthProvider = ({ protectedPage = false, children }: Props) => {
 
     setLoading(false);
     return;
-  }, [setAuthState, router]);
+  }, [setAuthState, router, passthrough, setLoading]);
 
   const logout = useCallback(async () => {
     setLoading(true);

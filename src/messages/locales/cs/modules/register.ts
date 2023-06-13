@@ -47,7 +47,6 @@ export const registerMessages: MessageObject = {
   'register.error.general': 'Při registraci došlo k chybě',
 
   /* BUTTONS */
-  'register.button.submit': 'Registrovat se',
   'register.button.o_auth.google': 'Google',
   'register.button.o_auth.facebook': 'Facebook',
 

@@ -1,10 +1,10 @@
 import React, { useCallback, useMemo, useState } from 'react';
 
-import { signIn } from 'next-auth/client';
+// import { signIn } from 'next-auth/client';
 import { useRouter } from 'next/router';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { HiOutlineAtSymbol, HiOutlineLockClosed } from 'react-icons/hi';
-import { FcGoogle } from 'react-icons/fc';
+// import { FcGoogle } from 'react-icons/fc';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -30,6 +30,8 @@ import {
   InputLeftElement,
   useToast,
   VStack,
+  Image,
+  HStack,
 } from '@chakra-ui/react';
 
 import { colors } from '@styles';
@@ -81,7 +83,7 @@ export const LoginForm = () => {
 
         saveAccessTokenToken(accessToken);
 
-        router.push('/component-pallette');
+        router.push('/');
       } catch (error) {
         if (
           error.response &&
@@ -155,7 +157,7 @@ export const LoginForm = () => {
             size="lg"
             type="submit"
             width="100%"
-            message={{ id: m('input.button') }}
+            message={{ id: 'button.login' }}
             isLoading={submitting}
           />
         </VStack>
@@ -163,22 +165,22 @@ export const LoginForm = () => {
     );
   }, [errors.email, errors.password, submitting]);
 
-  const oAuthSection = useMemo(() => {
-    return (
-      <Flex alignItems="center" justifyContent="space-between" width="100%">
-        <Button
-          width="49%"
-          variant="outline"
-          color="gray.500"
-          leftIcon={<FcGoogle color="white" />}
-          message={{ id: 'google' }}
-          onClick={() =>
-            signIn('google', { callbackUrl: '/new-oauth-user-landing' })
-          }
-        />
-      </Flex>
-    );
-  }, []);
+  // const oAuthSection = useMemo(() => {
+  //   return (
+  //     <Flex alignItems="center" justifyContent="space-between" width="100%">
+  //       <Button
+  //         width="49%"
+  //         variant="outline"
+  //         color="gray.500"
+  //         leftIcon={<FcGoogle color="white" />}
+  //         message={{ id: 'google' }}
+  //         onClick={() =>
+  //           signIn('google', { callbackUrl: '/new-oauth-user-landing' })
+  //         }
+  //       />
+  //     </Flex>
+  //   );
+  // }, []);
 
   const loginError = useMemo(() => {
     if (showAuthError)
@@ -201,44 +203,13 @@ export const LoginForm = () => {
   return (
     <Flex
       my="40px"
-      px="10px"
+      px="30px"
       width="100%"
       minH="80vh"
       justify="center"
       align="center"
     >
-      <Flex
-        w="100%"
-        maxW="1200px"
-        direction={['column', 'row-reverse']}
-        justify={['center', 'space-evenly']}
-        align={['center', 'flex-start']}
-      >
-        <Flex>
-          <VStack
-            maxW="400px"
-            spacing="10px"
-            direction="column"
-            justify="center"
-            align={['center', 'flex-start']}
-            m="50px"
-          >
-            <Text
-              type="heading"
-              fontWeight={900}
-              size="2xl"
-              color="teal.600"
-              message={{ id: 'brand_name' }}
-            />
-            <Divider orientation="horizontal" my="10px" />
-            <Text
-              type="text"
-              fontSize="sm"
-              textAlign={['center', 'left']}
-              message={{ id: m('hero.subtitle') }}
-            />
-          </VStack>
-        </Flex>
+      <HStack w="100%" maxW="1200px" justifyContent="space-evenly">
         <Flex
           minW="400px"
           py="40px"
@@ -265,19 +236,22 @@ export const LoginForm = () => {
             width="100%"
           >
             {form}
-            {oAuthSection}
+            {/* {oAuthSection} */}
             {loginError}
           </VStack>
           <Divider orientation="horizontal" my="10px" />
           <Link href="/register">
-            <Button
-              variant="ghost"
-              type="submit"
-              message={{ id: m('link.register') }}
-            />
+            <Button variant="ghost" message={{ id: m('link.register') }} />
           </Link>
         </Flex>
-      </Flex>
+        <Flex
+          display={['none', 'none', 'none', 'flex']}
+          width="600px"
+          marginTop="20px"
+        >
+          <Image src="/static/img/registration.jpg" opacity="0.5" />
+        </Flex>
+      </HStack>
     </Flex>
   );
 };

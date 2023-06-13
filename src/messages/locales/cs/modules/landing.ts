@@ -1,8 +1,9 @@
 import { MessageObject } from '../../../types';
 
 export const landingMessages: MessageObject = {
-  'landing.cta.text':
-    'Nulla nec nisi eget quam vehicula gravida ut dictum ligula. In rhoncus semper nunc, venenatis semper risus commodo in. Vestibulum ut semper odio, ut ultricies libero.',
+  'landing.cta.title': 'Booking na dosah ruky',
+  'landing.cta.subtitle':
+    'Zažijte maximální pohodlí při rezervaci kosmetických služeb přímo ze svého telefonu nebo počítače. Užívejte si bezproblémové a bezproblémové rezervace kosmetických služeb, které máte na dosah ruky.',
 
-  'landing.cta.button': 'Registrace zdarma',
+  'landing.cta.button.login': 'chci se přihlásit',
 };
