@@ -2,8 +2,8 @@ import { Coordinates } from '@api/address/types';
 import { Service, ServiceName, ServiceType } from '@api/services';
 import { Staff } from '@api/staff';
 import {
-  PaginationType,
   ResponseResult,
+  ResponseResultWithPagination,
   WeeklyBusinessHours,
 } from '@api/types';
 
@@ -44,7 +44,7 @@ export const listVenuesOrFail = async (
   queryParameters: ListVenuesQueryParameters,
 ) => {
   const response = await protectedApiClient.request<
-    ResponseResult<{ result: VenuesListItem[]; pagination: PaginationType }>
+    ResponseResultWithPagination<VenuesListItem[]>
   >({
     url: '/venues/list',
     method: 'get',
@@ -69,7 +69,7 @@ export const listVenuesOrFail = async (
     withCredentials: true,
   });
 
-  return response.data.data;
+  return response.data;
 };
 
 export type GetVenueByIdData = {

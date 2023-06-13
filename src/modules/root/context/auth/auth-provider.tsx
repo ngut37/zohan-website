@@ -32,6 +32,14 @@ export const AuthProvider = ({ protectedPage = false, children }: Props) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [auth, setAuthState] = useState<User | undefined>();
 
+  const setAuthFromAccessToken = useCallback(() => {
+    const accessToken = getAccessToken();
+    const data = parseAccessToken(accessToken, {});
+    if (data) {
+      setAuthState(data);
+    }
+  }, [setAuthState]);
+
   const authenticate = useCallback(async () => {
     // TODO: implement oAuth login
 
@@ -136,7 +144,14 @@ export const AuthProvider = ({ protectedPage = false, children }: Props) => {
 
   return (
     <AuthContext.Provider
-      value={{ auth, authenticate, logout, loading, setLoading }}
+      value={{
+        auth,
+        authenticate,
+        logout,
+        loading,
+        setLoading,
+        setAuthFromAccessToken,
+      }}
     >
       {content}
     </AuthContext.Provider>

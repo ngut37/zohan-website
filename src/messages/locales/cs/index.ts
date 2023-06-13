@@ -6,6 +6,7 @@ import { phoneNumberUpdateMessages } from './modules/phone-number-update';
 import { landingMessages } from './modules/landing';
 import { servicesMessages } from './modules/services';
 import { venueDetailMessages } from './modules/venue-detail';
+import { userSettingsMessages } from './modules/user-settings';
 
 export const cs = {
   ...globalMessages,
@@ -16,4 +17,5 @@ export const cs = {
   ...phoneNumberUpdateMessages,
   ...servicesMessages,
   ...venueDetailMessages,
+  ...userSettingsMessages,
 };

@@ -13,6 +13,12 @@ export type Config = Partial<{
   NEXTAUTH_URL: string;
 
   TESTING_EMAIL: string;
+
+  MIN_PASSWORD_LENGTH: number;
+  MAX_PASSWORD_LENGTH: number;
+
+  MIN_NAME_LENGTH: number;
+  MAX_NAME_LENGTH: number;
 }>;
 
 export type ConfigKeys = keyof Config;

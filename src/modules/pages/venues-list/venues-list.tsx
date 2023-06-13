@@ -105,11 +105,11 @@ export const VenueListPage = () => {
       (async () => {
         setLoading(true);
         try {
-          const { result: venues, pagination } = await listVenuesOrFail({
+          const { data, pagination } = await listVenuesOrFail({
             ...looselyTypedRouterQueryParams,
             limit: 5,
           });
-          setVenues(venues);
+          setVenues(data);
           setPagination(pagination);
         } catch (error) {
           toast({
