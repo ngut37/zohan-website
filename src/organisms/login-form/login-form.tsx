@@ -87,17 +87,32 @@ export const LoginForm = () => {
       } catch (error) {
         if (
           error.response &&
-          getResponseStatusCode(error.response) === HttpStatusCode.UNAUTHORIZED
+          getResponseStatusCode(error.response) === HttpStatusCode.FORBIDDEN
         ) {
-          setShowAuthError(true);
-        } else {
-          toast({
-            description: messageToString({ id: 'error.api' }, intl),
+          return toast({
+            description: messageToString(
+              { id: m('toast.must_verify_email') },
+              intl,
+            ),
             status: 'error',
             duration: 10000,
             isClosable: true,
           });
         }
+
+        if (
+          error.response &&
+          getResponseStatusCode(error.response) === HttpStatusCode.UNAUTHORIZED
+        ) {
+          return setShowAuthError(true);
+        }
+
+        toast({
+          description: messageToString({ id: 'error.api' }, intl),
+          status: 'error',
+          duration: 10000,
+          isClosable: true,
+        });
       } finally {
         setSubmitting(false);
       }

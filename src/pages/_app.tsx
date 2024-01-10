@@ -2,6 +2,7 @@ import React from 'react';
 
 import { AppProps } from 'next/app';
 import { Provider } from 'next-auth/client';
+import { Session } from 'next-auth';
 import Head from 'next/head';
 
 import { ChakraProvider, CSSReset } from '@chakra-ui/react';
@@ -11,7 +12,12 @@ import '@styles/normalize.scss';
 
 import { theme } from '@styles';
 
-function App({ Component, pageProps }: AppProps) {
+function App({
+  Component,
+  pageProps,
+}: AppProps<{
+  session: Session;
+}>) {
   return (
     <>
       <Head>

@@ -101,9 +101,6 @@ export async function register(
     withCredentials: true,
   });
 
-  // save accessToken
-  saveAccessTokenToken(response.data.data.accessToken);
-
   return response.data;
 }
 

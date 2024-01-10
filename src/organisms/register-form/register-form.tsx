@@ -30,6 +30,7 @@ import {
   VStack,
   Image,
   HStack,
+  useToast,
 } from '@chakra-ui/react';
 
 import { colors } from '@styles';
@@ -49,6 +50,7 @@ const m = messageIdConcat('register');
 export const RegisterForm = () => {
   const intl = useIntl();
   const router = useRouter();
+  const toast = useToast();
 
   const schema = yup.object().shape({
     name: yup
@@ -136,7 +138,13 @@ export const RegisterForm = () => {
         ...restData,
       });
       if (success) {
-        router.push('/component-pallette');
+        toast({
+          description: messageToString({ id: m('toast.verify_email') }, intl),
+          status: 'info',
+          duration: null, // do not auto close
+          isClosable: true,
+        });
+        router.push('/login');
       }
     } catch (e) {
       if (e?.response?.status === 409) {
