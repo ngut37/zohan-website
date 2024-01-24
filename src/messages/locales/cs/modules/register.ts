@@ -52,4 +52,7 @@ export const registerMessages: MessageObject = {
 
   /* LINKS */
   'register.link.login': 'Už máte účet? Přejděte na přihlašování.',
+
+  /* TOASTS */
+  'register.toast.verify_email': 'Na váš email byl odeslán ověřovací odkaz.',
 };
