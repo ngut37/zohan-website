@@ -32,7 +32,7 @@ export const parseAccessToken = (
   try {
     const payload = verify(
       token,
-      config.ACCESS_TOKEN_SECRET || '',
+      config.NEXT_PUBLIC_ACCESS_TOKEN_SECRET || '',
       verifyOptions,
     ) as User;
     return payload;

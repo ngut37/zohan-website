@@ -2,17 +2,15 @@ export type Config = Partial<{
   PORT: number;
   APP_ENV: EnvironmentName;
 
-  ACCESS_TOKEN_SECRET: string;
+  // ! NOT SECURE
+  NEXT_PUBLIC_ACCESS_TOKEN_SECRET: string;
 
-  API_URL: string;
-  APP_URL: string;
-  GOOGLE_ID: string;
-  GOOGLE_SECRET: string;
-  FACEBOOK_CLIENT_ID: string;
-  FACEBOOK_CLIENT_SECRET: string;
-  NEXTAUTH_URL: string;
-
-  TESTING_EMAIL: string;
+  NEXT_PUBLIC_API_URL: string;
+  NEXT_PUBLIC_APP_URL: string;
+  NEXT_PUBLIC_GOOGLE_ID: string;
+  NEXT_PUBLIC_GOOGLE_SECRET: string;
+  NEXT_PUBLIC_FACEBOOK_CLIENT_ID: string;
+  NEXT_PUBLIC_FACEBOOK_CLIENT_SECRET: string;
 
   MIN_PASSWORD_LENGTH: number;
   MAX_PASSWORD_LENGTH: number;

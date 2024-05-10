@@ -17,12 +17,12 @@ export default NextAuth({
   providers: [
     // OAuth authentication providers
     Providers.Google({
-      clientId: config.GOOGLE_ID,
-      clientSecret: config.GOOGLE_SECRET,
+      clientId: config.NEXT_PUBLIC_GOOGLE_ID,
+      clientSecret: config.NEXT_PUBLIC_GOOGLE_SECRET,
     }),
     // Providers.Facebook({
-    //   clientId: config.FACEBOOK_CLIENT_ID,
-    //   clientSecret: config.FACEBOOK_CLIENT_SECRET,
+    //   clientId: config.NEXT_PUBLIC_FACEBOOK_CLIENT_ID,
+    //   clientSecret: config.NEXT_PUBLIC_FACEBOOK_CLIENT_SECRET,
     // }),
   ],
   pages: {
