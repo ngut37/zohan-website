@@ -12,14 +12,14 @@ import {
 import { ResponseResult } from './types';
 
 export const apiClient = axios.create({
-  baseURL: config.API_URL?.toString(),
+  baseURL: config.NEXT_PUBLIC_API_URL?.toString(),
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
 export const protectedApiClient = axios.create({
-  baseURL: config.API_URL?.toString(),
+  baseURL: config.NEXT_PUBLIC_API_URL?.toString(),
   headers: {
     'Content-Type': 'application/json',
   },
