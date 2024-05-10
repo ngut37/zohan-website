@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react';
 
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
+import { useRouter } from 'next/router';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { config } from '@config/config';
@@ -12,6 +13,8 @@ import { yup } from '@utils/yup';
 import { messageToString } from '@utils/message';
 import { messageIdConcat } from '@utils/message-id-concat';
 
+import { removeAccessToken, saveAccessTokenToken } from '@utils/storage/auth';
+
 import { useAuth } from '@modules/root/context/auth';
 
 import { useToast } from '@chakra-ui/react';
@@ -21,6 +24,7 @@ const m = messageIdConcat('user_settings.basic_info');
 export const useUpdateUserForm = () => {
   const intl = useIntl();
   const toast = useToast();
+  const router = useRouter();
   const { setAuthFromAccessToken } = useAuth();
 
   const [submitting, setSubmitting] = useState(false);
@@ -83,13 +87,33 @@ export const useUpdateUserForm = () => {
     async (data) => {
       setSubmitting(true);
       try {
-        await updateUserOrFail(data);
+        const {
+          data: { accessToken },
+        } = await updateUserOrFail(data);
+
+        if (!accessToken) {
+          toast({
+            description: messageToString(
+              { id: m('toast.success_and_verify_email') },
+              intl,
+            ),
+            status: 'success',
+            duration: 10000,
+            isClosable: true,
+          });
+
+          removeAccessToken();
+          router.push('/login');
+          return;
+        }
+
         toast({
           description: messageToString({ id: m('toast.success') }, intl),
           status: 'success',
           duration: 10000,
           isClosable: true,
         });
+        saveAccessTokenToken(accessToken);
         setAuthFromAccessToken();
       } catch (error) {
         toast({

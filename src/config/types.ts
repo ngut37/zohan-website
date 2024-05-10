@@ -1,8 +1,7 @@
 export type Config = Partial<{
-  PORT: number;
   APP_ENV: EnvironmentName;
 
-  // ! NOT SECURE
+  // TODO: remove after auth is overhauled to use http-only access token (https://zohan-app.atlassian.net/browse/ZOH-128)
   NEXT_PUBLIC_ACCESS_TOKEN_SECRET: string;
 
   NEXT_PUBLIC_API_URL: string;

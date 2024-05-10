@@ -21,6 +21,8 @@ export const userSettingsMessages: MessageObject = {
 
   // toasts
   'user_settings.basic_info.toast.success': 'Změny byly uloženy',
+  'user_settings.basic_info.toast.success_and_verify_email':
+    'Změny byly uloženy, potvrďte svůj nový emailovou adresu',
 
   // errors
   'user_settings.basic_info.input.name.error.min': `Jméno musí obsahovat nejméně {length} {length, plural, 

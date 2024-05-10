@@ -1,7 +1,5 @@
 import { ResponseResult } from '@api/types';
 
-import { saveAccessTokenToken } from '@utils/storage/auth';
-
 import { apiClient, protectedApiClient } from '../api-client';
 
 import { OAuthType } from './types';
@@ -121,16 +119,13 @@ export type UpdateUserPayload = {
 export const updateUserOrFail = async (body: UpdateUserPayload) => {
   try {
     const response = await protectedApiClient.request<
-      ResponseResult<{ accessToken: string }>
+      ResponseResult<{ accessToken: string | null }>
     >({
       url: `/auth/update`,
       method: 'POST',
       data: body,
       withCredentials: true,
     });
-
-    // set new accessToken
-    saveAccessTokenToken(response.data.data.accessToken);
 
     return response.data;
   } catch (err) {
