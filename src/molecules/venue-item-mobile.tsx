@@ -23,13 +23,14 @@ export const VenueItemMobile = ({
   stringAddress,
   company,
   district,
+  mop,
   services,
 }: Props) => {
   const intl = useIntl();
   const router = useRouter();
 
   const concatAddress = useMemo(() => {
-    return `${stringAddress}, ${district}`;
+    return `${stringAddress}, ${mop || district}`;
   }, [stringAddress, district]);
 
   return (

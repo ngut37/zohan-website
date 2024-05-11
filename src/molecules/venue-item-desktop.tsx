@@ -27,6 +27,7 @@ export const VenueItemDesktop = ({
   stringAddress,
   company,
   district,
+  mop,
   services,
 }: Props) => {
   const intl = useIntl();
@@ -35,7 +36,7 @@ export const VenueItemDesktop = ({
   const [hover, setHover] = useState(false);
 
   const concatAddress = useMemo(() => {
-    return `${stringAddress}, ${district}`;
+    return `${stringAddress}, ${mop || district}`;
   }, [stringAddress, district]);
 
   return (
