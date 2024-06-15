@@ -41,6 +41,8 @@ export const registerMessages: MessageObject = {
   'register.input.password.error.required': 'Heslo nemůžse být prázdné',
   'register.input.password.error.min': 'Heslo musí obsahovat nejméně 6 znaků',
   'register.input.password.error.max': 'Heslo je příliš dlouhé',
+  'register.input.password.error.format':
+    'Heslo musí obsahovat alespoň jedno velké písmeno, jedno malé písmeno a jednu číslici',
   'register.input.password_confirm.error.match': 'Zadaná hesla nesouhlasí',
   'register.input.phone_number.error.format': 'Zadejte platné číslo',
 

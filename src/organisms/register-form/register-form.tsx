@@ -91,6 +91,10 @@ export const RegisterForm = () => {
         config.MAX_PASSWORD_LENGTH || 256,
         messageToString({ id: m('input.password.error.max') }, intl),
       )
+      .matches(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
+        messageToString({ id: m('input.password.error.format') }, intl),
+      )
       .required(
         messageToString({ id: m('input.password.error.required') }, intl),
       ),
@@ -325,6 +329,7 @@ export const RegisterForm = () => {
         <Flex
           py="40px"
           px={['20px', '40px']}
+          maxW="420px"
           direction="column"
           justify="center"
           align="center"
