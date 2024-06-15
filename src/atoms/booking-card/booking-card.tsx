@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 
 import {
   HiOutlineCalendar,
@@ -7,6 +7,8 @@ import {
 } from 'react-icons/hi';
 import { BiDollar } from 'react-icons/bi';
 import { useIntl } from 'react-intl';
+
+import { useRouter } from 'next/router';
 
 import { SimplifiedBooking } from '@api/booking';
 
@@ -23,7 +25,20 @@ import { HStack, Tag, VStack } from '@chakra-ui/react';
 type Props = SimplifiedBooking;
 
 export const BookingCard = (booking: Props) => {
+  const router = useRouter();
   const intl = useIntl();
+
+  const [isHover, setHover] = useState(false);
+
+  const concatAddress = useMemo(() => {
+    return `${booking.venue.stringAddress}, ${
+      booking.venue.mop || booking.venue.district
+    }`;
+  }, [booking.venue]);
+
+  const onCardClick = useCallback(() => {
+    router.push(`/venues/${booking.venue._id}`);
+  }, [router, booking.venue._id]);
 
   return (
     <HStack
@@ -38,6 +53,10 @@ export const BookingCard = (booking: Props) => {
       overflow="hidden"
       transition="all 0.2s"
       textAlign="left"
+      onClick={onCardClick}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      cursor="pointer"
     >
       <VStack alignItems="flex-start">
         <HStack>
@@ -47,6 +66,18 @@ export const BookingCard = (booking: Props) => {
             }}
             width="100%"
             fontWeight="semibold"
+            decoration={isHover ? 'underline' : 'none'}
+          />
+        </HStack>
+        <HStack>
+          <Text
+            message={{
+              text: concatAddress,
+            }}
+            width="100%"
+            fontWeight="thin"
+            size="sm"
+            decoration={isHover ? 'underline' : 'none'}
           />
         </HStack>
         <HStack>
