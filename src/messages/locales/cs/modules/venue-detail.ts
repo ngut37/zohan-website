@@ -46,4 +46,6 @@ export const venueDetailMessages: MessageObject = {
     'Vaše rezervace byla úspěšně vytvořena.',
   'venue_detail.booking_confirmation_modal.description':
     'Váš termín je potvrzený a níže najdete rekapitulaci rezervace:',
+  'venue_detail.booking_confirmation_modal.button.confirm':
+    'Zobrazit mé rezervace',
 };

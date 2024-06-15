@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 
 import { useIntl } from 'react-intl';
 import {
-  HiCheck,
+  HiEye,
   HiOutlineCalendar,
   HiOutlineCheckCircle,
   HiOutlineClock,
@@ -39,6 +39,7 @@ import { colors } from '@styles';
 type Props = {
   isOpen: boolean;
   onClose: () => void;
+  onConfirm: () => void;
   booking?: Booking;
   size?: ModalProps['size'];
 };
@@ -48,6 +49,7 @@ const m = messageIdConcat('venue_detail.booking_confirmation_modal');
 export const BookingConfirmationModal = ({
   isOpen,
   onClose,
+  onConfirm,
   booking,
   size = 'xl',
 }: Props) => {
@@ -156,13 +158,8 @@ export const BookingConfirmationModal = ({
           </VStack>
         </ModalBody>
         <ModalFooter display="flex" justifyContent="center">
-          <Button
-            leftIcon={<HiCheck />}
-            onClick={onClose}
-            size="lg"
-            width="170px"
-          >
-            {messageToString({ id: 'button.close' }, intl)}
+          <Button leftIcon={<HiEye />} onClick={onConfirm} size="lg">
+            {messageToString({ id: m('button.confirm') }, intl)}
           </Button>
         </ModalFooter>
       </ModalContent>

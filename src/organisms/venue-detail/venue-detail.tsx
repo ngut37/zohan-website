@@ -154,6 +154,10 @@ export const VenueDetail = () => {
     scrollToComponent();
   }, [onClose, scrollToComponent]);
 
+  const onModalConfirm = useCallback(() => {
+    router.push('/settings');
+  }, [router]);
+
   if (!venue || !staff || !services) {
     return (
       <Flex
@@ -180,6 +184,7 @@ export const VenueDetail = () => {
         <BookingConfirmationModal
           isOpen={isOpen}
           onClose={onModalClose}
+          onConfirm={onModalConfirm}
           size="full"
           booking={latestCreatedBooking}
         />
@@ -201,6 +206,7 @@ export const VenueDetail = () => {
           <BookingConfirmationModal
             isOpen={isOpen}
             onClose={onModalClose}
+            onConfirm={onModalConfirm}
             size="2xl"
             booking={latestCreatedBooking}
           />
