@@ -79,7 +79,7 @@ export const HistoricBookingsMobile = () => {
     return (
       <VStack width="100%" divider={<Divider />}>
         {historicBookings.map((booking) => (
-          <BookingCard key={booking._id} {...booking} />
+          <BookingCard key={booking._id} booking={booking} />
         ))}
       </VStack>
     );

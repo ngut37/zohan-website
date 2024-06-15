@@ -25,6 +25,15 @@ export const createBooking = async (bookingPayload: BookingPayload) => {
   return response.data.data;
 };
 
+export const cancelBooking = async (bookingId: string) => {
+  const response = await protectedApiClient.request<ResponseResult<never>>({
+    url: `/bookings/${bookingId}/cancel`,
+    method: 'post',
+  });
+
+  return response.data.data;
+};
+
 export const getAvailableSlots = async (
   bookingPayload: Omit<BookingPayload, 'start'> & { day: string },
 ) => {

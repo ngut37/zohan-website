@@ -4,13 +4,14 @@ import {
   HiOutlineCalendar,
   HiOutlineClock,
   HiOutlineTag,
+  HiX,
 } from 'react-icons/hi';
 import { BiDollar } from 'react-icons/bi';
 import { useIntl } from 'react-intl';
 
 import { useRouter } from 'next/router';
 
-import { SimplifiedBooking } from '@api/booking';
+import { cancelBooking, SimplifiedBooking } from '@api/booking';
 
 import { messageToString } from '@utils/message';
 import {
@@ -18,13 +19,21 @@ import {
   getHourMinuteFromDate,
 } from '@utils/get-hour-minute-from-date';
 
-import { Text } from '@atoms';
+import { Text, Button } from '@atoms';
 
 import { HStack, Tag, VStack } from '@chakra-ui/react';
 
-type Props = SimplifiedBooking;
+type Props = {
+  booking: SimplifiedBooking;
+  displayBookingCancel?: boolean;
+  onBookingCancel?: () => void;
+};
 
-export const BookingCard = (booking: Props) => {
+export const BookingCard = ({
+  booking,
+  displayBookingCancel,
+  onBookingCancel,
+}: Props) => {
   const router = useRouter();
   const intl = useIntl();
 
@@ -40,25 +49,39 @@ export const BookingCard = (booking: Props) => {
     router.push(`/venues/${booking.venue._id}`);
   }, [router, booking.venue._id]);
 
+  const onCancelButtonClick = useCallback(async () => {
+    const confirmation = window.confirm(
+      messageToString({ id: 'confirm.cancel_booking' }, intl),
+    );
+
+    if (!confirmation) return;
+
+    await cancelBooking(booking._id);
+    onBookingCancel && onBookingCancel();
+  }, [intl, booking._id, onBookingCancel]);
+
   return (
     <HStack
       position="relative"
       width="100%"
       maxWidth="450px"
-      paddingX="30px"
-      paddingY="12px"
+      marginY="12px"
       justifyContent="space-between"
       borderColor="gray.100"
       backgroundColor="white"
       overflow="hidden"
       transition="all 0.2s"
       textAlign="left"
-      onClick={onCardClick}
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-      cursor="pointer"
+      zIndex="0"
     >
-      <VStack alignItems="flex-start">
+      <VStack
+        alignItems="flex-start"
+        onClick={onCardClick}
+        onMouseEnter={() => setHover(true)}
+        onMouseLeave={() => setHover(false)}
+        cursor="pointer"
+        width="100%"
+      >
         <HStack>
           <Text
             message={{
@@ -130,6 +153,20 @@ export const BookingCard = (booking: Props) => {
           />
         </HStack>
       </VStack>
+      {displayBookingCancel && (
+        <Button
+          display={isHover ? 'flex' : 'none'}
+          leftIcon={<HiX />}
+          position="absolute"
+          zIndex="1"
+          right="0"
+          bottom="0"
+          variant="outline"
+          colorScheme="orange"
+          message={{ id: 'button.cancel' }}
+          onClick={onCancelButtonClick}
+        />
+      )}
     </HStack>
   );
 };

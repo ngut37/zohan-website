@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useIntl } from 'react-intl';
 
@@ -20,25 +20,29 @@ export const ActiveBookingsMobile = () => {
 
   const [loading, setLoading] = useState(true);
 
+  const refetchActiveBookings = useCallback(async () => {
+    setLoading(true);
+
+    try {
+      const { data } = await getActiveBookingsOrFail();
+      setActiveBookings(data);
+    } catch (error) {
+      toast({
+        description: messageToString({ id: 'error.api' }, intl),
+        status: 'error',
+        duration: 10000,
+        isClosable: true,
+      });
+    } finally {
+      setLoading(false);
+    }
+  }, [setActiveBookings, setLoading]);
+
   useEffect(() => {
     (async () => {
-      setLoading(true);
-
-      try {
-        const { data } = await getActiveBookingsOrFail();
-        setActiveBookings(data);
-      } catch (error) {
-        toast({
-          description: messageToString({ id: 'error.api' }, intl),
-          status: 'error',
-          duration: 10000,
-          isClosable: true,
-        });
-      } finally {
-        setLoading(false);
-      }
+      await refetchActiveBookings();
     })();
-  }, [setLoading]);
+  }, []);
 
   const bookingsCards = useMemo(() => {
     if (loading) {
@@ -64,7 +68,12 @@ export const ActiveBookingsMobile = () => {
     return (
       <VStack width="100%" divider={<Divider />}>
         {activeBookings.map((booking) => (
-          <BookingCard key={booking._id} {...booking} />
+          <BookingCard
+            key={booking._id}
+            booking={booking}
+            displayBookingCancel
+            onBookingCancel={refetchActiveBookings}
+          />
         ))}
       </VStack>
     );

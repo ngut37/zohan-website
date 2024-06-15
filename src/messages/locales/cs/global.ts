@@ -33,6 +33,7 @@ export const globalMessages: MessageObject = {
   // BUTTONS
   'button.back': 'zpět',
   'button.close': 'zavřít',
+  'button.cancel': 'zrušit',
   'button.filter': 'filtrovat',
   'button.book': 'rezervovat',
   'button.show': 'zobrazit',
@@ -46,4 +47,7 @@ export const globalMessages: MessageObject = {
   'button.confirm_booking': 'potvrdit rezervaci',
   'button.understood': 'rozumím',
   'button.look_up_services': 'vyhledat služby',
+
+  // CONFIRMATIONS
+  'confirm.cancel_booking': 'Opravdu chcete zrušit tuto rezervaci?',
 };
