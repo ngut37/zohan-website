@@ -10,7 +10,7 @@ import { Booking, SimplifiedBooking } from './types';
 export type BookingPayload = {
   venueId: string;
   serviceId: string;
-  staffId: string;
+  staffId: string | null;
   /** Stringified ISO date. */
   start: string;
 };

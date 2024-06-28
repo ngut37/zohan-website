@@ -2,12 +2,10 @@ import React, { useEffect, useMemo, useState } from 'react';
 
 import { UseFormSetValue } from 'react-hook-form';
 import { useIntl } from 'react-intl';
-import {
-  HiCheck,
-  HiOutlineInformationCircle,
-  HiOutlineUser,
-} from 'react-icons/hi';
+import { HiCheck, HiOutlineInformationCircle } from 'react-icons/hi';
 import { minutesToMilliseconds, addDays, getDay } from 'date-fns';
+
+import { StaffButton, UnknownStaffButton } from 'atoms/staff-button';
 
 import { GetVenueByIdData } from '@api/venues';
 import { Service } from '@api/services';
@@ -81,7 +79,7 @@ export const BookingCreateForm = ({
     if (
       !formValues.venueId ||
       !formValues.serviceId ||
-      !formValues.staffId ||
+      formValues.staffId === undefined ||
       !selectedDate
     ) {
       setAvailableSlots([]);
@@ -197,68 +195,20 @@ export const BookingCreateForm = ({
       <VStack width="100%">
         <InputLabel message={{ id: m('filter.input.staff.label') }} />
         <HStack width="100%" flexWrap="wrap" justifyContent="space-evenly">
+          <UnknownStaffButton
+            setFormValue={setFormValue}
+            formValues={formValues}
+            loadingSlots={loadingSlots}
+          />
           {availableStaffForService.map((staff, i) => {
             return (
-              <Button
+              <StaffButton
                 key={i}
-                variant="unstyled"
-                width="100px"
-                height="100px"
-                marginX="20px !important"
-                marginY="20px !important"
-                onClick={() => {
-                  setFormValue('staffId', staff._id);
-
-                  // unset booking start time
-                  setFormValue('start', '');
-                }}
-                disabled={loadingSlots || formValues.staffId === staff._id}
-                _disabled={{
-                  cursor: 'not-allowed',
-                  color: 'teal',
-                  borderColor: 'teal',
-                }}
-              >
-                <VStack
-                  textDecoration="none"
-                  boxShadow="none"
-                  _hover={{
-                    cursor: 'pointer',
-                    color: 'teal',
-                    borderColor: 'teal',
-                    textDecoration: 'underline',
-                  }}
-                >
-                  <VStack
-                    width="70px"
-                    height="70px"
-                    borderRadius="50%"
-                    justifyContent="center"
-                    alignItems="center"
-                    border="3px solid"
-                    borderColor={
-                      formValues.staffId === staff._id ? 'teal' : 'black'
-                    }
-                    _hover={{
-                      cursor: 'pointer',
-                      color: 'teal',
-                      borderColor: 'teal',
-                    }}
-                  >
-                    <HiOutlineUser
-                      fontSize="40px"
-                      color={
-                        formValues.staffId === staff._id ? 'teal' : 'black'
-                      }
-                    />
-                  </VStack>
-                  <Text
-                    message={{ text: staff.name }}
-                    color={formValues.staffId === staff._id ? 'teal' : 'black'}
-                    textDecoration="inherit"
-                  />
-                </VStack>
-              </Button>
+                staff={staff}
+                setFormValue={setFormValue}
+                formValues={formValues}
+                loadingSlots={loadingSlots}
+              />
             );
           })}
         </HStack>
@@ -355,7 +305,6 @@ export const BookingCreateForm = ({
             justifyContent="center"
             alignItems="center"
             fontWeight="normal"
-            color={selected ? 'white' : 'black'}
           >
             <Text
               message={{ text: getHourMinuteFromDate(slot) }}
@@ -417,7 +366,7 @@ export const BookingCreateForm = ({
     const disabled =
       !formValues.venueId ||
       !formValues.serviceId ||
-      !formValues.staffId ||
+      formValues.staffId === undefined ||
       !formValues.start;
 
     return (
@@ -456,7 +405,7 @@ export const BookingCreateForm = ({
         </Collapse>
         <Collapse
           className={classes.section}
-          in={Boolean(formValues.staffId)}
+          in={Boolean(formValues.staffId || formValues.staffId === null)}
           unmountOnExit={false}
           animateOpacity
         >

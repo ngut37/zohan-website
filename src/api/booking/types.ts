@@ -7,7 +7,7 @@ export type Booking = {
   venue: Omit<VenuesListItem, 'company'> & {
     company: { _id: string; name: string };
   };
-  staff: Staff;
+  staff?: Staff;
   service: Service;
   start: string;
   end: string;
@@ -58,7 +58,7 @@ export const exampleBooking: Booking = {
 export type SimplifiedBooking = {
   _id: string;
   venue: VenuesListItem;
-  staff: {
+  staff?: {
     staffName: string;
   };
   service: {

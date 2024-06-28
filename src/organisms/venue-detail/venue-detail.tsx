@@ -59,23 +59,16 @@ export const VenueDetail = () => {
         .string()
         .required(
           messageToString(
-            { id: m('create_booking.input.venueId.required') },
+            { id: m('create_booking.input.venue.error.required') },
             intl,
           ),
         ),
-      staffId: yup
-        .string()
-        .required(
-          messageToString(
-            { id: m('create_booking.input.staffId.required') },
-            intl,
-          ),
-        ),
+      staffId: yup.string().nullable(),
       serviceId: yup
         .string()
         .required(
           messageToString(
-            { id: m('create_booking.input.servicesId.required') },
+            { id: m('create_booking.input.service.error.required') },
             intl,
           ),
         ),
@@ -83,7 +76,7 @@ export const VenueDetail = () => {
         .date()
         .required(
           messageToString(
-            { id: m('create_booking.input.start.required') },
+            { id: m('create_booking.input.start.error.required') },
             intl,
           ),
         ),
@@ -219,6 +212,7 @@ export const VenueDetail = () => {
             formSubmit={onSubmit}
             formReset={() => {
               reset();
+              setValue('serviceId', '');
               setValue('venueId', venueId);
             }}
           />

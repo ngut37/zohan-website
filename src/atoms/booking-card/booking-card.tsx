@@ -155,7 +155,11 @@ export const BookingCard = ({
       </VStack>
       {displayBookingCancel && (
         <Button
-          display={isHover ? 'flex' : 'none'}
+          display={{
+            sm: 'flex',
+            md: 'flex',
+            lg: isHover ? 'flex' : 'none',
+          }}
           leftIcon={<HiX />}
           position="absolute"
           zIndex="1"

@@ -13,8 +13,6 @@ export const venueDetailMessages: MessageObject = {
   // form errors
   'venue_detail.create_booking.input.venue.error.required':
     'Vyberte prosím pobočku',
-  'venue_detail.create_booking.input.staff.error.required':
-    'Vyberte prosím pracovníka',
   'venue_detail.create_booking.input.service.error.required':
     'Vyberte prosím službu',
   'venue_detail.create_booking.input.start.error.required':
