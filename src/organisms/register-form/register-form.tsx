@@ -84,7 +84,7 @@ export const RegisterForm = () => {
     password: yup
       .string()
       .min(
-        config.MIN_PASSWORD_LENGTH || 6,
+        config.MIN_PASSWORD_LENGTH || 8,
         messageToString({ id: m('input.password.error.min') }, intl),
       )
       .max(
